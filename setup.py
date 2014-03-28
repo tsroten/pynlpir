@@ -30,6 +30,6 @@ setup(
         ],
     keywords=['nlpir', 'ictclas', 'chinese', 'segmentation', 'nlp'],
     packages=['pynlpir'],
-    package_data={'pynlpir': ['data/*', 'lib/*']},
+    package_data={'pynlpir': ['Data/*', 'Data/English/*', 'lib/*']},
     test_suite='pynlpir.tests'
 )
