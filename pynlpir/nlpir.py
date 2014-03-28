@@ -30,7 +30,7 @@ ENCODINGS = {
     'gbk': GBK, '936': GBK, 'cp936': GBK, 'ms936': GBK,
     'utf8': UTF8, 'u8': UTF8, 'utf': UTF8,
     'big5': BIG5, 'big5tw': BIG5, 'csbig5': BIG5,
-    'gbkt': GBK_T, 'gbkfanti': GBK_T
+    'gbkt': GBK_T
 }
 
 # Part of speech mapping constants:
@@ -52,16 +52,16 @@ class NLPIR(object):
         package.
     :param str encoding: The encoding of the strings that will be processed by
         NLPIR. This should be a Python-recognized encoding name for UTF-8
-        (default), GBK, or BIG5 (e.g. ``'utf-8'``). Additionally, you can use
-        ``'gbk-t'`` for GBK-encoded strings that contain Traditional Chinese
-        characters.
+        (default), GBK, or BIG5 (e.g. ``'utf-8'`` or ``'big5'``).
+    :param bool has_traditional: Whether or not the input strings will contain
+        Traditional Chinese characters (only used if *encoding* is ``'gbk'``).
     :param str pos: The part of speech map to use. This should be one of:
         ``'ict1'``, ``'ict2'``, ``'pku1'``, or ``'pku2'``.
 
     """
 
     def __init__(self, lib_dir=LIB_DIR, data_dir=PACKAGE_DIR, encoding='utf-8',
-                 pos='ict2'):
+                 has_traditional=False, pos='ict2'):
         """Loads the NLPIR library; initializes the API; sets the POS map."""
         self.logger = logging.getLogger('nlpir.%s' % self.__class__.__name__)
         self.logger.debug("Initializing a NLPIR object: {'lib_dir': '%s', "
@@ -69,7 +69,7 @@ class NLPIR(object):
                           % (lib_dir, data_dir, encoding, pos))
         self.pos = pos  # TODO: make this set to default NLPIR POS map.
         self._load_library(lib_dir)
-        self._init(data_dir, encoding)
+        self._init(data_dir, encoding, has_traditional)
         self.set_pos_map(pos)
 
     def _load_library(self, lib_dir=LIB_DIR):
@@ -99,7 +99,8 @@ class NLPIR(object):
         self.logger.debug("Library file '%s' loaded." % lib)
         self.logger.info("NLPIR library file loaded.")
 
-    def _init(self, data_dir=PACKAGE_DIR, encoding='utf-8'):
+    def _init(self, data_dir=PACKAGE_DIR, encoding='utf-8',
+              has_traditional=False):
         """Initializes the NLPIR API."""
         self.logger.info("Initializing the NLPIR API.")
         self.logger.debug("Initializing the NLPIR API: {'data_dir': '%s', "
@@ -111,6 +112,9 @@ class NLPIR(object):
         except KeyError:
             raise ValueError("Encoding '%s' is not supported by NLPIR." %
                              encoding)
+        if encoding_cons == GBK and has_traditional:
+            encoding_cons = ENCODINGS['gbkt']
+        self.encoding_cons = encoding_cons
         init = self.get_func('NLPIR_Init')
         if not init(data_dir, encoding_cons):
             raise RuntimeError("NLPIR function 'NLPIR_Init' failed.")
