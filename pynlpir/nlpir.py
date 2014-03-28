@@ -15,7 +15,8 @@ logger.debug("Loading NLPIR module on a %s %s system." % ('64-bit' if is_64bit
 if not is_linux and not is_windows:
     logger.error("Platform '%s' is not supported by NLPIR." % sys.platform)
 
-#: The absolute path to this package.
+#: The absolute path to this package (used by NLPIR to find the ``Data``
+#: directory).
 PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 #: The absolute path to this path's lib directory.
