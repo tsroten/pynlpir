@@ -48,12 +48,11 @@ class NLPIR(object):
     :param str lib_dir: The directory containing the NLPIR library files.
         Defaults to the library directory that is included with this Python
         package.
-    :param str data_dir: The directory containing the NLPIR data files.
-        Defaults to the data directory that is included with this Python
-        package.
+    :param str data_dir: The directory containing NLPIR's ``Data`` directory.
+        Defaults to this package's root directory.
     :param str encoding: The encoding of the strings that will be processed by
         NLPIR. This should be a Python-recognized encoding name for UTF-8
-        (default), GBK, or BIG5 (e.g. ``'utf-8'`` or ``'big5'``).
+        (default), GBK, or BIG5 (e.g. ``'utf-8'``, ``'gbk'``, or ``'big5'``).
     :param bool has_traditional: Whether or not the input strings will contain
         Traditional Chinese characters (only used if *encoding* is ``'gbk'``).
     :param str pos: The part of speech map to use. This should be one of:
