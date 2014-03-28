@@ -241,9 +241,10 @@ class NLPIR(object):
         p = self.decode(p)
         self.logger.debug("Searching for up to %s%s key words in: %s." %
                           (max_words, ' weighted' if weighted else '', p))
-        _get_key_words = self.get_func('NLPIR_GetKeyWords', restype=c_char_p)
+        _get_key_words = self.get_func('NLPIR_GetKeyWords',
+                                       [c_char_p, c_int, c_bool], c_char_p)
         result = _get_key_words(p, max_words, weighted)
-        result = self.decode(result)
+        result = result.decode('utf-8')
         self.logger.debug("Finished key word search: %s." % result)
         self.logger.debug("Formatting key word search results.")
         if not weighted:
