@@ -117,18 +117,22 @@ class NLPIR(object):
         else:
             self.logger.info("NLPIR API initialized.")
 
-    def get_func(self, name, restype=None):
+    def get_func(self, name, argtypes=None, restype=None):
         """Retrieves the corresponding NLPIR function.
 
         *name* is a string containing the name of the NLPIR function to get.
+        *argtypes* is a list of :mod:`ctypes` data types that correspond to the
+        function's argument types.
         *restype* is a :mod:`ctypes` data type that corresponds to the
-        function's return type (needed if the return type isn't the C ``int``
-        type.
+        function's return type (only needed if the return type isn't
+        :data:`ctypes.c_int``).
 
         """
         self.logger.debug("Getting NLPIR API function: {'name': '%s', "
                           "'restype': '%s'}." % (name, restype))
         func = getattr(self.libNLPIR, name)
+        if argtypes is not None:
+            func.argtypes = argtypes
         if restype is not None:
             func.restype = restype
         self.logger.debug("NLPIR API function '%s' retrieved." % name)
@@ -164,7 +168,8 @@ class NLPIR(object):
         """
         self.logger.debug("Processing paragraph with%s POS tagging: %s." %
                           ('' if pos_tagging else 'out', p))
-        _process_paragraph = self.get_func('NLPIR_ParagraphProcess', c_char_p)
+        _process_paragraph = self.get_func('NLPIR_ParagraphProcess',
+                                           restype=c_char_p)
         result = _process_paragraph(p, pos_tagging)
         self.logger.debug("Finished processing paragraph: %s." % result)
         self.logger.debug("Formatting processed paragraph.")
@@ -192,7 +197,7 @@ class NLPIR(object):
 
         self.logger.debug("Searching for up to %s%s key words in: %s." %
                           (max_words, ' weighted' if weighted else '', p))
-        _get_key_words = self.get_func('NLPIR_GetKeyWords', c_char_p)
+        _get_key_words = self.get_func('NLPIR_GetKeyWords', restype=c_char_p)
         result = _get_key_words(p, max_words, weighted)
         self.logger.debug("Finished key word search: %s." % result)
         self.logger.debug("Formatting key word search results.")
