@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 
-logger = logging.getLogger('nlpir')
+logger = logging.getLogger('pynlpir')
 
 is_linux = sys.platform.startswith('linux')
 is_windows = sys.platform.startswith('win')
@@ -63,7 +63,7 @@ class NLPIR(object):
     def __init__(self, lib_dir=LIB_DIR, data_dir=PACKAGE_DIR, encoding='utf-8',
                  has_traditional=False, pos='ict2'):
         """Loads the NLPIR library; initializes the API; sets the POS map."""
-        self.logger = logging.getLogger('nlpir.%s' % self.__class__.__name__)
+        self.logger = logging.getLogger('pynlpir.%s' % self.__class__.__name__)
         self.logger.debug("Initializing a NLPIR object: {'lib_dir': '%s', "
                           "'data_dir': '%s', 'encoding': '%s', 'pos': '%s'}."
                           % (lib_dir, data_dir, encoding, pos))
