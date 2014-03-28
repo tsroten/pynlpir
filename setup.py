@@ -29,7 +29,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         ],
     keywords=['nlpir', 'ictclas', 'chinese', 'segmentation', 'nlp'],
-    packages=['nlpir'],
-    package_data={'nlpir': ['data/*', 'lib/*']},
-    test_suite='nlpir.tests'
+    packages=['pynlpir'],
+    package_data={'pynlpir': ['data/*', 'lib/*']},
+    test_suite='pynlpir.tests'
 )

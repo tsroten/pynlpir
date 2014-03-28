@@ -1,4 +1,4 @@
-"""Provides a Python interface to NLPIR/ICTCLAS."""
+"""Provides a Python interface to NLPIR."""
 from __future__ import unicode_literals
 from ctypes import c_char_p, cdll
 import logging
@@ -45,7 +45,7 @@ POS = {'ict2': ICT_2, 'ict1': ICT_1, 'pku2': PKU_2, 'pku1': PKU_1}
 
 
 class NLPIR(object):
-    """A Python interface to NLPIR/ICTCLAS.
+    """A Python interface to NLPIR.
 
     :param str lib_dir: The directory containing the NLPIR library files.
         Defaults to the library directory that is included with this Python
