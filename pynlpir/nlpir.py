@@ -129,7 +129,7 @@ class NLPIR(object):
         function's argument types.
         *restype* is a :mod:`ctypes` data type that corresponds to the
         function's return type (only needed if the return type isn't
-        :data:`ctypes.c_int``).
+        :class:`ctypes.c_int`).
 
         """
         self.logger.debug("Getting NLPIR API function: {'name': '%s', "
