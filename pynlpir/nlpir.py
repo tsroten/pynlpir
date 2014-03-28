@@ -1,6 +1,6 @@
 """Provides a Python interface to NLPIR."""
 from __future__ import unicode_literals
-from ctypes import c_char_p, c_int, cdll
+from ctypes import c_bool, c_char_p, c_int, cdll
 import logging
 import os
 import sys
@@ -123,6 +123,26 @@ class NLPIR(object):
         else:
             self.logger.info("NLPIR API initialized.")
 
+    def _exit(self):
+        """Exits the NLPIR API and frees allocated memory."""
+        self.logger.debug("Exiting the NLPIR API.")
+        _exit = self.get_func('NLPIR_Exit', restype=c_bool)
+        if not _exit():
+            self.logger.warning("NLPIR function 'NLPIR_Exit' failed.")
+        else:
+            self.logger.debug("NLPIR API exited.")
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        """Exits the NLPIR API when a context manager is used."""
+        self.close()
+
+    def close(self):
+        """Exits the NLPIR API."""
+        self._exit()
+
     def is_unicode(self, s):
         """Checks if *s* is unicode (str in Python 3)."""
         if is_python3:
@@ -193,7 +213,7 @@ class NLPIR(object):
         _process_paragraph = self.get_func('NLPIR_ParagraphProcess',
                                            restype=c_char_p)
         result = _process_paragraph(self.encode(p), pos_tagging)
-        result = self.decode(result)
+        result = result.decode('utf-8')
         self.logger.debug("Finished processing paragraph: %s." % result)
         self.logger.debug("Formatting processed paragraph.")
         tokens = result.split(' ')
