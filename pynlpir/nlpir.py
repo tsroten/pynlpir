@@ -199,27 +199,27 @@ class NLPIR(object):
             self.logger.info("POS map set to '%s'." % pos)
             self.pos = pos
 
-    def process_paragraph(self, p, pos_tagging=True):
-        """Process paragraph *p* using NLPIR.
+    def segment(self, s, pos_tagging=True):
+        """Segment Chinese text *s* using NLPIR.
 
         The segmented tokens are returned in a list. If *pos_tagging* is
         ``True``, then each token is returned as a tuple: ``(token, pos)``.
         If it's ``False``, then each token is returned as a string.
 
         """
-        p = self.decode(p)
-        self.logger.debug("Processing paragraph with%s POS tagging: %s." %
-                          ('' if pos_tagging else 'out', p))
+        s = self.decode(s)
+        self.logger.debug("Segmenting text with%s POS tagging: %s." %
+                          ('' if pos_tagging else 'out', s))
         _process_paragraph = self.get_func('NLPIR_ParagraphProcess',
-                                           restype=c_char_p)
-        result = _process_paragraph(self.encode(p), pos_tagging)
+                                           [c_char_p, c_int], c_char_p)
+        result = _process_paragraph(self.encode(s), pos_tagging)
         result = result.decode('utf-8')
-        self.logger.debug("Finished processing paragraph: %s." % result)
-        self.logger.debug("Formatting processed paragraph.")
+        self.logger.debug("Finished segmenting text: %s." % result)
+        self.logger.debug("Formatting segmented text.")
         tokens = result.split(' ')
         if pos_tagging:
             tokens = [tuple(t.split('/')) for t in tokens]
-        self.logger.debug("Formatted processed paragaph: %s." % tokens)
+        self.logger.debug("Formatted segmented text: %s." % tokens)
         return tokens
 
     def get_key_words(self, p, max_words=50, weighted=False):
