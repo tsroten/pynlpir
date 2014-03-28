@@ -7,6 +7,8 @@ import sys
 
 logger = logging.getLogger('pynlpir')
 
+is_python3 = sys.version_info[0] > 2
+
 is_linux = sys.platform.startswith('linux')
 is_windows = sys.platform.startswith('win')
 is_64bit = sys.maxsize > 2**32
@@ -121,6 +123,20 @@ class NLPIR(object):
         else:
             self.logger.info("NLPIR API initialized.")
 
+    def is_unicode(self, s):
+        """Checks if *s* is unicode (str in Python 3)."""
+        if is_python3:
+            return isinstance(s, str)
+        return isinstance(s, unicode)
+
+    def decode(self, s):
+        """Decodes *s* using :data:`encoding`."""
+        return s if self.is_unicode(s) else s.decode(self.encoding)
+
+    def encode(self, s):
+        """Encodes *s* using :data:`encoding`."""
+        return s.encode(self.encoding) if self.is_unicode(s) else s
+
     def get_func(self, name, argtypes=None, restype=None):
         """Retrieves the corresponding NLPIR function.
 
@@ -171,11 +187,13 @@ class NLPIR(object):
         If it's ``False``, then each token is returned as a string.
 
         """
+        p = self.decode(p)
         self.logger.debug("Processing paragraph with%s POS tagging: %s." %
                           ('' if pos_tagging else 'out', p))
         _process_paragraph = self.get_func('NLPIR_ParagraphProcess',
                                            restype=c_char_p)
-        result = _process_paragraph(p, pos_tagging)
+        result = _process_paragraph(self.encode(p), pos_tagging)
+        result = self.decode(result)
         self.logger.debug("Finished processing paragraph: %s." % result)
         self.logger.debug("Formatting processed paragraph.")
         tokens = result.split(' ')
@@ -200,10 +218,12 @@ class NLPIR(object):
             except ValueError:
                 return False
 
+        p = self.decode(p)
         self.logger.debug("Searching for up to %s%s key words in: %s." %
                           (max_words, ' weighted' if weighted else '', p))
         _get_key_words = self.get_func('NLPIR_GetKeyWords', restype=c_char_p)
         result = _get_key_words(p, max_words, weighted)
+        result = self.decode(result)
         self.logger.debug("Finished key word search: %s." % result)
         self.logger.debug("Formatting key word search results.")
         if not weighted:
