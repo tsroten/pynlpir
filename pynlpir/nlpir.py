@@ -1,6 +1,6 @@
 """Provides a Python interface to NLPIR."""
 from __future__ import unicode_literals
-from ctypes import c_char_p, cdll
+from ctypes import c_char_p, c_int, cdll
 import logging
 import os
 import sys
@@ -151,7 +151,7 @@ class NLPIR(object):
             pos_cons = POS[pos_map]
         except KeyError:
             raise ValueError("POS map '%s' not supported by NLPIR." % pos)
-        _set_pos_map = self.get_func('NLPIR_SetPOSMap')
+        _set_pos_map = self.get_func('NLPIR_SetPOSMap', argtypes=[c_int])
         if not _set_pos_map(pos_cons):
             self.logger.error("Unable to set POS map to '%s'." % pos)
         else:
