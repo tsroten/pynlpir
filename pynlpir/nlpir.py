@@ -129,7 +129,8 @@ class NLPIR(object):
 
         """
         self.logger.debug("Getting NLPIR API function: {'name': '%s', "
-                          "'restype': '%s'}." % (name, restype))
+                          "'argtypes': '%s', 'restype': '%s'}." %
+                          (name, argtypes, restype))
         func = getattr(self.libNLPIR, name)
         if argtypes is not None:
             func.argtypes = argtypes
