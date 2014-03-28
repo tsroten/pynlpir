@@ -16,10 +16,7 @@ if not is_linux and not is_windows:
     logger.error("Platform '%s' is not supported by NLPIR." % sys.platform)
 
 #: The absolute path to this package.
-PACKAGE_DIR = os.path.dirname(__file__)
-
-#: The absolute path to this package's data directory.
-DATA_DIR = os.path.join(PACKAGE_DIR, 'data')
+PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 #: The absolute path to this path's lib directory.
 LIB_DIR = os.path.join(PACKAGE_DIR, 'lib')
@@ -63,7 +60,7 @@ class NLPIR(object):
 
     """
 
-    def __init__(self, lib_dir=LIB_DIR, data_dir=DATA_DIR, encoding='utf-8',
+    def __init__(self, lib_dir=LIB_DIR, data_dir=PACKAGE_DIR, encoding='utf-8',
                  pos='ict2'):
         """Loads the NLPIR library; initializes the API; sets the POS map."""
         self.logger = logging.getLogger('nlpir.%s' % self.__class__.__name__)
@@ -102,7 +99,7 @@ class NLPIR(object):
         self.logger.debug("Library file '%s' loaded." % lib)
         self.logger.info("NLPIR library file loaded.")
 
-    def _init(self, data_dir=DATA_DIR, encoding='utf-8'):
+    def _init(self, data_dir=PACKAGE_DIR, encoding='utf-8'):
         """Initializes the NLPIR API."""
         self.logger.info("Initializing the NLPIR API.")
         self.logger.debug("Initializing the NLPIR API: {'data_dir': '%s', "
