@@ -172,7 +172,7 @@ class NLPIR(object):
             pos_cons = POS[pos_map]
         except KeyError:
             raise ValueError("POS map '%s' not supported by NLPIR." % pos)
-        _set_pos_map = self.get_func('NLPIR_SetPOSMap', argtypes=[c_int])
+        _set_pos_map = self.get_func('NLPIR_SetPOSmap', argtypes=[c_int])
         if not _set_pos_map(pos_cons):
             self.logger.error("Unable to set POS map to '%s'." % pos)
         else:
