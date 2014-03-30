@@ -93,7 +93,7 @@ def init(data_dir=PACKAGE_DIR):
     """
     logger.info("Initializing the NLPIR API.")
     logger.debug("Initializing the NLPIR API: {'data_dir': '%s'}" % data_dir)
-    init = get_func('NLPIR_Init')
+    init = get_func('NLPIR_Init', [c_char_p, c_int, c_char_p])
     if not init(data_dir, UTF8):
         raise RuntimeError("NLPIR function 'NLPIR_Init' failed.")
     else:
