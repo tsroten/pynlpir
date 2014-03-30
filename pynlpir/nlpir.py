@@ -24,17 +24,8 @@ PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
 #: The absolute path to this path's lib directory.
 LIB_DIR = os.path.join(PACKAGE_DIR, 'lib')
 
-# Encoding constants:
-GBK = 0
+# NLPIR encoding constants:
 UTF8 = 1
-BIG5 = 2
-GBK_T = 3
-ENCODINGS = {
-    'gbk': GBK, '936': GBK, 'cp936': GBK, 'ms936': GBK,
-    'utf8': UTF8, 'u8': UTF8, 'utf': UTF8,
-    'big5': BIG5, 'big5tw': BIG5, 'csbig5': BIG5,
-    'gbkt': GBK_T
-}
 
 # Part of speech mapping constants:
 ICT_2 = 0
@@ -52,26 +43,20 @@ class NLPIR(object):
         package.
     :param str data_dir: The directory containing NLPIR's ``Data`` directory.
         Defaults to this package's root directory.
-    :param str encoding: The encoding of the strings that will be processed by
-        NLPIR. This should be a Python-recognized encoding name for UTF-8
-        (default), GBK, or BIG5 (e.g. ``'utf-8'``, ``'gbk'``, or ``'big5'``).
-    :param bool has_traditional: Whether or not the input strings will contain
-        Traditional Chinese characters (only used if *encoding* is ``'gbk'``).
     :param str pos: The part of speech map to use. This should be one of:
         ``'ict1'``, ``'ict2'``, ``'pku1'``, or ``'pku2'``.
 
     """
 
-    def __init__(self, lib_dir=LIB_DIR, data_dir=PACKAGE_DIR, encoding='utf-8',
-                 has_traditional=False, pos='ict2'):
+    def __init__(self, lib_dir=LIB_DIR, data_dir=PACKAGE_DIR, pos='ict2'):
         """Loads the NLPIR library; initializes the API; sets the POS map."""
         self.logger = logging.getLogger('pynlpir.%s' % self.__class__.__name__)
         self.logger.debug("Initializing a NLPIR object: {'lib_dir': '%s', "
-                          "'data_dir': '%s', 'encoding': '%s', 'pos': '%s'}."
-                          % (lib_dir, data_dir, encoding, pos))
+                          "'data_dir': '%s', 'pos': '%s'}." %
+                          (lib_dir, data_dir, pos))
         self.pos = pos  # TODO: make this set to default NLPIR POS map.
         self._load_library(lib_dir)
-        self._init(data_dir, encoding, has_traditional)
+        self._init(data_dir)
         self.set_pos_map(pos)
 
     def _load_library(self, lib_dir=LIB_DIR):
@@ -101,25 +86,15 @@ class NLPIR(object):
         self.logger.debug("Library file '%s' loaded." % lib)
         self.logger.info("NLPIR library file loaded.")
 
-    def _init(self, data_dir=PACKAGE_DIR, encoding='utf-8',
-              has_traditional=False):
+    def _init(self, data_dir=PACKAGE_DIR):
         """Initializes the NLPIR API."""
         self.logger.info("Initializing the NLPIR API.")
-        self.logger.debug("Initializing the NLPIR API: {'data_dir': '%s', "
-                          "'encoding': '%s'}." % (data_dir, encoding))
-        self.encoding = encoding
-        encoding_map = encoding.lower().replace('_', '').replace('-', '')
-        try:
-            encoding_cons = ENCODINGS[encoding_map]
-        except KeyError:
-            raise ValueError("Encoding '%s' is not supported by NLPIR." %
-                             encoding)
-        if encoding_cons == GBK and has_traditional:
-            encoding_cons = ENCODINGS['gbkt']
-        self.encoding_cons = encoding_cons
+        self.logger.debug("Initializing the NLPIR API: {'data_dir': '%s'}"
+                          % data_dir)
         init = self.get_func('NLPIR_Init')
-        if not init(data_dir, encoding_cons):
-            raise RuntimeError("NLPIR function 'NLPIR_Init' failed.")
+        if not init(data_dir, UTF8):
+            raise RuntimeError("NLPIR function 'NLPIR_Init' failed. "
+                               "Check NLPIR error log for more information.")
         else:
             self.logger.info("NLPIR API initialized.")
 
@@ -143,19 +118,19 @@ class NLPIR(object):
         """Exits the NLPIR API."""
         self._exit()
 
-    def is_unicode(self, s):
+    def _is_unicode(self, s):
         """Checks if *s* is unicode (str in Python 3)."""
         if is_python3:
             return isinstance(s, str)
         return isinstance(s, unicode)
 
-    def decode(self, s):
-        """Decodes *s* using :data:`encoding`."""
-        return s if self.is_unicode(s) else s.decode(self.encoding)
+    def _decode(self, s):
+        """Decodes *s* using UTF-8."""
+        return s if self.is_unicode(s) else s.decode('utf-8')
 
-    def encode(self, s):
-        """Encodes *s* using :data:`encoding`."""
-        return s.encode(self.encoding) if self.is_unicode(s) else s
+    def _encode(self, s):
+        """Encodes *s* using UTF-8."""
+        return s.encode('utf-8') if self.is_unicode(s) else s
 
     def get_func(self, name, argtypes=None, restype=None):
         """Retrieves the corresponding NLPIR function.
@@ -207,12 +182,12 @@ class NLPIR(object):
         If it's ``False``, then each token is returned as a string.
 
         """
-        s = self.decode(s)
+        s = self._decode(s)
         self.logger.debug("Segmenting text with%s POS tagging: %s." %
                           ('' if pos_tagging else 'out', s))
         _process_paragraph = self.get_func('NLPIR_ParagraphProcess',
                                            [c_char_p, c_int], c_char_p)
-        result = _process_paragraph(self.encode(s), pos_tagging)
+        result = _process_paragraph(self._encode(s), pos_tagging)
         result = result.decode('utf-8')
         self.logger.debug("Finished segmenting text: %s." % result)
         self.logger.debug("Formatting segmented text.")
@@ -238,12 +213,12 @@ class NLPIR(object):
             except ValueError:
                 return False
 
-        p = self.decode(p)
+        p = self._decode(p)
         self.logger.debug("Searching for up to %s%s key words in: %s." %
                           (max_words, ' weighted' if weighted else '', p))
         _get_key_words = self.get_func('NLPIR_GetKeyWords',
                                        [c_char_p, c_int, c_bool], c_char_p)
-        result = _get_key_words(p, max_words, weighted)
+        result = _get_key_words(self._encode(p), max_words, weighted)
         result = result.decode('utf-8')
         self.logger.debug("Finished key word search: %s." % result)
         self.logger.debug("Formatting key word search results.")
