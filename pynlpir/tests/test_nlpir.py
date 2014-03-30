@@ -29,7 +29,7 @@ class TestNLPIR(unittest.TestCase):
         """Tests that the get_key_words() function works as expected."""
         s = '我们都是美国人。'
         key_words = nlpir.get_key_words(s)
-        weighted_key_words = nlpir.get_key_words(weighted=True)
+        weighted_key_words = nlpir.get_key_words(s, weighted=True)
         expected_key_words = ['美国']
         expected_weighted_key_words = [('美国', 0.01)]
         self.assertEqual(expected_key_words, key_words)
