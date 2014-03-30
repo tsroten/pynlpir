@@ -222,16 +222,14 @@ class NLPIR(object):
         result = result.decode('utf-8')
         self.logger.debug("Finished key word search: %s." % result)
         self.logger.debug("Formatting key word search results.")
-        if not weighted:
-            fresult = result.split(' ')
-        else:
+        fresult = result.strip('#').split('#')
+        if weighted:
             weights, words = [], []
-            for w in result.split(' '):
-                n = to_float(w)
-                if n is not False:
-                    weights.append(n)
-                else:
-                    words.append(w)
+            for w in fresult:
+                word, pos, weight = w.split('/')
+                weight = to_float(weight)
+                weights.append(weight or 0.0)
+                words.append(word)
             fresult = zip(words, weights)
         self.logger.debug("Key words formatted: %s." % fresult)
         return fresult
