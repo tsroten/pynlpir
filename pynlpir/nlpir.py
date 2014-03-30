@@ -117,6 +117,7 @@ class NLPIR(object):
     def close(self):
         """Exits the NLPIR API."""
         self._exit()
+        del self.libNLPIR._handle
         del self.libNLPIR
 
     def _is_unicode(self, s):
