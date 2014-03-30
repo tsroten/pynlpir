@@ -117,6 +117,7 @@ class NLPIR(object):
     def close(self):
         """Exits the NLPIR API."""
         self._exit()
+        del self.libNLPIR
 
     def _is_unicode(self, s):
         """Checks if *s* is unicode (str in Python 3)."""
