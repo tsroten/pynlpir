@@ -191,7 +191,7 @@ class NLPIR(object):
         result = result.decode('utf-8')
         self.logger.debug("Finished segmenting text: %s." % result)
         self.logger.debug("Formatting segmented text.")
-        tokens = result.split(' ')
+        tokens = result.strip().split(' ')
         if pos_tagging:
             tokens = [tuple(t.split('/')) for t in tokens]
         self.logger.debug("Formatted segmented text: %s." % tokens)
