@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Provides a Python interface to NLPIR."""
 from __future__ import unicode_literals
 from ctypes import c_bool, c_char_p, c_int, cdll
