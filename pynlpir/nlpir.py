@@ -126,11 +126,11 @@ class NLPIR(object):
 
     def _decode(self, s):
         """Decodes *s* using UTF-8."""
-        return s if self.is_unicode(s) else s.decode('utf-8')
+        return s if self._is_unicode(s) else s.decode('utf-8')
 
     def _encode(self, s):
         """Encodes *s* using UTF-8."""
-        return s.encode('utf-8') if self.is_unicode(s) else s
+        return s.encode('utf-8') if self._is_unicode(s) else s
 
     def get_func(self, name, argtypes=None, restype=None):
         """Retrieves the corresponding NLPIR function.
