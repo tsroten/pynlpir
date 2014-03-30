@@ -197,8 +197,8 @@ class NLPIR(object):
         self.logger.debug("Formatted segmented text: %s." % tokens)
         return tokens
 
-    def get_key_words(self, p, max_words=50, weighted=False):
-        """Determines key words in paragraph *p*.
+    def get_key_words(self, s, max_words=50, weighted=False):
+        """Determines key words in Chinese text *s*.
 
         The key words are returned in a list. If *weighted* is ``True``,
         then each token is returned as a tuple: ``(token, weight)``, where
@@ -213,12 +213,12 @@ class NLPIR(object):
             except ValueError:
                 return False
 
-        p = self._decode(p)
+        s = self._decode(s)
         self.logger.debug("Searching for up to %s%s key words in: %s." %
-                          (max_words, ' weighted' if weighted else '', p))
+                          (max_words, ' weighted' if weighted else '', s))
         _get_key_words = self.get_func('NLPIR_GetKeyWords',
                                        [c_char_p, c_int, c_bool], c_char_p)
-        result = _get_key_words(self._encode(p), max_words, weighted)
+        result = _get_key_words(self._encode(s), max_words, weighted)
         result = result.decode('utf-8')
         self.logger.debug("Finished key word search: %s." % result)
         self.logger.debug("Formatting key word search results.")
