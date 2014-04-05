@@ -28,6 +28,8 @@ UTF8 = 1
 def load_library(platform, is_64bit, lib_dir=LIB_DIR):
     """Loads the NLPIR library appropriate for the user's system.
 
+    This is called automatically when :mod:`pynlpir.nlpir` is imported.
+
     :param str platform: The platform identifier for the user's system.
     :param bool is_64bit: Whether or not the user's system is 64-bit.
     :param str lib_dir: The directory that contains the library files
