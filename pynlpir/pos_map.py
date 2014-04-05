@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-"""A part of speech map for NLPIR/ICTCLAS."""
+"""Part of speech mapping constants and functions for NLPIR/ICTCLAS."""
 
 from __future__ import unicode_literals
 
 
+#: A dictionary that maps part of speech codes returned by NLPIR to
+#: human-readable names (English and Chinese).
 POS_MAP = {
     'n': ('名词', 'noun', {
         'nr': ('人名', 'personal name', {
@@ -145,6 +147,22 @@ def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
     return pos if names == 'all' else pos[-1]
 
 
-def get_pos_name(pos_code, names='parent', english=True):
-    """Gets the part of speech name for *pos_code*."""
-    return _get_pos_name(pos_code, names, english)
+def get_pos_name(code, name='parent', english=True):
+    """Gets the part of speech name for *code*.
+
+    :param str code: The part of speech code to lookup, e.g. ``'nsf'``.
+    :param str name: Which part of speech name to include in the output. Must
+        be one of ``'parent'``, ``'child'``, or ``'all'``. Defaults to
+        ``'parent'``. ``'parent'`` indicates that only the most generic name
+        should be used, e.g. ``'noun'`` for ``'nsf'``. ``'child'`` indicates
+        that the most specific name should be used, e.g.
+        ``'transcribed toponym'`` for ``'nsf'``. ``'all'`` indicates that all
+        names should be used, e.g. ``('noun', 'toponym',
+        'transcribed toponym')`` for ``'nsf'``.
+    :param bool english: Whether to return an English or Chinese name.
+
+    :returns: ``str`` (``unicode`` for Python 2) if *name* is ``'parent'`` or
+        ``'child'``. ``tuple`` if *name* is ``'all'``.
+
+    """
+    return _get_pos_name(code, name, english)

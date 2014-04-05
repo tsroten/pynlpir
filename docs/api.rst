@@ -89,3 +89,16 @@ Provides a Python API to NLPIR/ICTCLAS.
     :param int max_words: The maximum number of key words (up to ``50``) to
         find (defaults to ``50``).
     :param bool weighted: Whether or not to return the key words' weights.
+
+
+.. module:: pynlpir.pos_map
+
+``pynlpir.pos_map``
+-------------------
+
+Part of speech mapping constants and functions for NLPIR/ICTCLAS.
+
+.. autodata:: POS_MAP
+    :annotation:
+
+.. autofunction:: get_pos_name
