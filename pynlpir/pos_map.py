@@ -27,7 +27,7 @@ POS_MAP = {
     'f': ('方位词', 'noun of locality'),
     'v': ('动词', 'verb', {
         'vd': ('副动词', 'auxiliary verb'),
-        'vn': ('名动词', 'nounal verb'),
+        'vn': ('名动词', 'noun-verb'),
         'vshi': ('动词"是"', 'verb 是'),
         'vyou': ('动词"有"', 'verb 有'),
         'vf': ('趋向动词', 'directional verb'),
@@ -38,7 +38,7 @@ POS_MAP = {
     }),
     'a': ('形容词', 'adjective', {
         'ad': ('副形词', 'auxiliary adjective'),
-        'an': ('名形词', 'nounal adjective'),
+        'an': ('名形词', 'noun-adjective'),
         'ag': ('形容词性语素', 'adjective morpheme'),
         'al': ('形容词性惯用语', 'adjective phrase'),
     }),
@@ -76,19 +76,19 @@ POS_MAP = {
         'cc': ('并列连词', 'coordinating conjunction'),
     }),
     'u': ('助词', 'particle', {
-        'uzhe': ('着', '着'),
-        'ule': ('了／喽', '了/喽'),
-        'uguo': ('过', '过'),
-        'ude1': ('的／底', '的/底'),
-        'ude2': ('地', '地'),
-        'ude3': ('得', '得'),
-        'usuo': ('所', '所'),
-        'udeng': ('等／等等／云云', '等/等等/云云'),
-        'uyy': ('一样／一般／似的／般', '一样/一般/似的/般'),
-        'udh': ('的话', '的话'),
-        'uls': ('来讲／来说／而言／说来', '来讲/来说/而言/说来'),
-        'uzhi': ('之', '之'),
-        'ulian': ('连', '连'),
+        'uzhe': ('着', 'particle 着'),
+        'ule': ('了／喽', 'particle 了/喽'),
+        'uguo': ('过', 'particle 过'),
+        'ude1': ('的／底', 'particle 的/底'),
+        'ude2': ('地', 'particle 地'),
+        'ude3': ('得', 'particle 得'),
+        'usuo': ('所', 'particle 所'),
+        'udeng': ('等／等等／云云', 'particle 等/等等/云云'),
+        'uyy': ('一样／一般／似的／般', 'particle 一样/一般/似的/般'),
+        'udh': ('的话', 'particle 的话'),
+        'uls': ('来讲／来说／而言／说来', 'particle 来讲/来说/而言/说来'),
+        'uzhi': ('之', 'particle 之'),
+        'ulian': ('连', 'particle 连'),
     }),
     'e': ('叹词', 'interjection'),
     'y': ('语气词', 'modal particle'),
@@ -121,8 +121,11 @@ POS_MAP = {
 }
 
 
-def _get_pos_name(pos_code, parents=False, english=True, pos_map=POS_MAP):
+def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
     """Gets the part of speech name for *pos_code*."""
+    if names not in ('parent', 'child', 'all'):
+        raise ValueError("names must be one of 'parent', 'child', or "
+                         "'all'; not '%s'" % names)
     for i in range(1, len(pos_code) + 1):
         try:
             pos_key = pos_code[0:i]
@@ -133,13 +136,15 @@ def _get_pos_name(pos_code, parents=False, english=True, pos_map=POS_MAP):
                 raise ValueError("part of speech not recognized: '%s'" %
                                  pos_code)
     pos = (pos_entry[1 if english else 0], )
+    if names == 'parent':
+        return pos[0]
     if len(pos_entry) == 3 and pos_key != pos_code:
         sub_map = pos_entry[2]
-        sub_pos = _get_pos_name(pos_code, parents, english, sub_map)
-        pos = pos + sub_pos if parents else (sub_pos, )
-    return pos if parents else pos[-1]
+        sub_pos = _get_pos_name(pos_code, names, english, sub_map)
+        pos = pos + sub_pos if names == 'all' else (sub_pos, )
+    return pos if names == 'all' else pos[-1]
 
 
-def get_pos_name(pos_code, parents=False, english=True):
+def get_pos_name(pos_code, names='parent', english=True):
     """Gets the part of speech name for *pos_code*."""
-    return _get_pos_name(pos_code, parents, english)
+    return _get_pos_name(pos_code, names, english)
