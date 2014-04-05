@@ -6,6 +6,8 @@ import logging
 import os
 import sys
 
+import pos_map
+
 logger = logging.getLogger('pynlpir.nlpir')
 
 is_python3 = sys.version_info[0] > 2
@@ -129,18 +131,37 @@ def _to_float(s):
         return False
 
 
-def segment(s, pos_tagging=True):
+def _get_pos_name(pos_code, parents, english):
+    """Gets the part of speech name for *pos_code*.
+
+    Joins the names together with ``':'`` if *parents* is True.
+
+    """
+    name = pos_map.get_pos_name(pos_code, parents, english)
+    return ':'.join(name) if parents else name
+
+
+def segment(s, pos_tagging=True, pos_names=True, parents=False, english=True):
     """Segment Chinese text *s* using NLPIR.
 
     The segmented tokens are returned as a list. Each item of the list is a
     string if *pos_tagging* is `False`, e.g. ``['我们', '是', ...]``. If
     *pos_tagging* is `True`, then each item is a tuple (``(token, pos)``), e.g.
-    ``[('我们', 'rr'), ('是', 'vshi'), ...]``.
+    ``[('我们', 'personal pronoun'), ('是', 'verb 是'), ...]``.
 
     :param s: The Chinese text to segment. *s* should be Unicode or a UTF-8
         encoded string.
     :param bool pos_tagging: Whether or not to include part of speech tagging
         (defaults to ``True``).
+    :param bool pos_names: Whether or not to convert the part of speech codes
+        to part of speech names, e.g. ``'wd'`` to ``'comma'``. Defaults to
+        ``True``.
+    :param bool parents: Whether or not to include the part of speech name's
+        parents, e.g. ``'noun:personal name:Chinese surname'``. Defaults to
+        ``False``. This is only used if *pos_names* is ``True``.
+    :param bool english: Whether or not to use English or Chinese for the part
+        of speech names, e.g. ``'conjunction'`` or ``'连词'``. Defaults to
+        ``True``. This is only used if *pos_names* is ``True``.
 
     """
     s = _decode(s)
@@ -154,7 +175,11 @@ def segment(s, pos_tagging=True):
     logger.debug("Formatting segmented text.")
     tokens = result.strip().split(' ')
     if pos_tagging:
-        tokens = [tuple(t.split('/')) for t in tokens]
+        for i, t in enumerate(tokens):
+            token = tuple(t.split('/'))
+            if pos_names:
+                token = (token[0], _get_pos_name(token[1], parents, english))
+            tokens[i] = token
     logger.debug("Formatted segmented text: %s." % tokens)
     return tokens
 
