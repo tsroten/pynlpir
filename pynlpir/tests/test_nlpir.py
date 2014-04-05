@@ -30,7 +30,7 @@ class TestNLPIR(unittest.TestCase):
         expected_ppos_seg_s = [('我们', 'pronoun:personal pronoun'),
                                ('都', 'adverb'), ('是', 'verb:verb 是'),
                                ('美国', 'noun:toponym:transcribed toponym'),
-                               ('人', 'noun'), ('。', 'punctuation:period')]
+                               ('人', 'noun'), ('。', 'punctuation mark:period')]
         self.assertEqual(expected_seg_s, seg_s)
         self.assertEqual(expected_pos_seg_s, pos_seg_s)
         self.assertEqual(expected_npos_seg_s, npos_seg_s)

@@ -47,7 +47,7 @@ POS_MAP = {
     }),
     'z': ('状态词', 'status word'),
     'r': ('代词', 'pronoun', {
-        'rr': ('人称代词', 'personal prounoun'),
+        'rr': ('人称代词', 'personal pronoun'),
         'rz': ('指示代词', 'demonstrative pronoun', {
             'rzt': ('时间指示代词', 'temporal demonstrative pronoun'),
             'rzs': ('处所指示代词', 'locative demonstrative pronoun'),
