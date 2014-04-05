@@ -53,19 +53,28 @@ Provides a Python API to NLPIR/ICTCLAS.
 
     Exits the NLPIR API and frees allocated memory.
 
-.. function:: segment(s, pos_tagging=True)
+.. function:: segment(s, pos_tagging=True, pos_names=True, parents=False, english=True)
 
     Segment Chinese text *s* using NLPIR.
 
     The segmented tokens are returned as a list. Each item of the list is a
     string if *pos_tagging* is `False`, e.g. ``['我们', '是', ...]``. If
     *pos_tagging* is `True`, then each item is a tuple (``(token, pos)``), e.g.
-    ``[('我们', 'rr'), ('是', 'vshi'), ...]``.
+    ``[('我们', 'personal pronoun'), ('是', 'verb 是'), ...]``.
 
     :param s: The Chinese text to segment. *s* should be Unicode or a UTF-8
         encoded string.
     :param bool pos_tagging: Whether or not to include part of speech tagging
         (defaults to ``True``).
+    :param bool pos_names: Whether or not to convert the part of speech codes
+        to part of speech names, e.g. ``'wd'`` to ``'comma'``. Defaults to
+        ``True``.
+    :param bool parents: Whether or not to include the part of speech name's
+        parents, e.g. ``'noun:personal name:Chinese surname'``. Defaults to
+        ``False``. This is only used if *pos_names* is ``True``.
+    :param bool english: Whether or not to use English or Chinese for the part
+        of speech names, e.g. ``'conjunction'`` or ``'连词'``. Defaults to
+        ``True``. This is only used if *pos_names* is ``True``.
 
 .. function:: get_key_words(s, max_words=50, weighted=False)
 
