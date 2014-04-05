@@ -91,6 +91,9 @@ def get_func(name, argtypes=None, restype=None, lib=libNLPIR):
 def init(data_dir=PACKAGE_DIR):
     """Initializes the NLPIR API.
 
+    This calls the NLPIR function ``NLPIR_Init``. This is automatically
+    called when :mod:`pynlpir.nlpir` is imported.
+
     :param str data_dir: The absolute path to the directory that has NLPIR's
         `Data` directory (defaults to :data:`PACKAGE_DIR`).
 
@@ -105,7 +108,11 @@ def init(data_dir=PACKAGE_DIR):
 
 
 def close():
-    """Exits the NLPIR API and frees allocated memory."""
+    """Exits the NLPIR API and frees allocated memory.
+
+    This calls the NLPIR function ``NLPIR_Exit``.
+
+    """
     logger.debug("Exiting the NLPIR API.")
     exit = get_func('NLPIR_Exit', restype=c_bool)
     if not exit():
@@ -133,35 +140,44 @@ def _to_float(s):
         return False
 
 
-def _get_pos_name(pos_code, parents, english):
-    """Gets the part of speech name for *pos_code*.
+def _get_pos_name(code, name='parent', english=True):
+    """Gets the part of speech name for *code*.
 
-    Joins the names together with ``':'`` if *parents* is True.
+    Joins the names together with ``':'`` if *name* is ``'all'``.
+
+    See :func:``pynlpir.pos_map.get_pos_name`` for more information.
 
     """
-    name = pos_map.get_pos_name(pos_code, parents, english)
-    return ':'.join(name) if parents else name
+    pos_name = pos_map.get_pos_name(code, name, english)
+    return ':'.join(pos_name) if name == 'all' else pos_name
 
 
-def segment(s, pos_tagging=True, pos_names=True, parents=False, english=True):
+def segment(s, pos_tagging=True, pos_names='parent', english=True):
     """Segment Chinese text *s* using NLPIR.
 
     The segmented tokens are returned as a list. Each item of the list is a
     string if *pos_tagging* is `False`, e.g. ``['我们', '是', ...]``. If
     *pos_tagging* is `True`, then each item is a tuple (``(token, pos)``), e.g.
-    ``[('我们', 'personal pronoun'), ('是', 'verb 是'), ...]``.
+    ``[('我们', 'pronoun'), ('是', 'verb'), ...]``.
+
+    This uses the NLPIR function ``NLPIR_ParagraphProcess`` to segment *s*.
 
     :param s: The Chinese text to segment. *s* should be Unicode or a UTF-8
         encoded string.
     :param bool pos_tagging: Whether or not to include part of speech tagging
         (defaults to ``True``).
-    :param bool pos_names: Whether or not to convert the part of speech codes
-        to part of speech names, e.g. ``'wd'`` to ``'comma'``. Defaults to
-        ``True``.
-    :param bool parents: Whether or not to include the part of speech name's
-        parents, e.g. ``'noun:personal name:Chinese surname'``. Defaults to
-        ``False``. This is only used if *pos_names* is ``True``.
-    :param bool english: Whether or not to use English or Chinese for the part
+    :param pos_names: What type of part of speech names to return. This
+        argument is only used if *pos_tagging* is ``True``. :data:`None`
+        means only the original NLPIR part of speech code will be returned.
+        Other than :data:`None`, *pos_names* may be one of ``'parent'``,
+        ``'child'``, or ``'all'``. Defaults to ``'parent'``. ``'parent'``
+        indicates that only the most generic name should be used, e.g.
+        ``'noun'`` for ``'nsf'``. ``'child'`` indicates that the most specific
+        name should be used, e.g. ``'transcribed toponym'`` for ``'nsf'``.
+        ``'all'`` indicates that all names should be used, e.g.
+        ``'noun:toponym:transcribed toponym'`` for ``'nsf'``.
+    :type pos_names: ``str`` or :data:`None`
+    :param bool english: Whether to use English or Chinese for the part
         of speech names, e.g. ``'conjunction'`` or ``'连词'``. Defaults to
         ``True``. This is only used if *pos_names* is ``True``.
 
@@ -179,8 +195,8 @@ def segment(s, pos_tagging=True, pos_names=True, parents=False, english=True):
     if pos_tagging:
         for i, t in enumerate(tokens):
             token = tuple(t.split('/'))
-            if pos_names:
-                token = (token[0], _get_pos_name(token[1], parents, english))
+            if pos_names is not None:
+                token = (token[0], _get_pos_name(token[1], pos_names, english))
             tokens[i] = token
     logger.debug("Formatted segmented text: %s." % tokens)
     return tokens
@@ -193,7 +209,10 @@ def get_key_words(s, max_words=50, weighted=False):
     then each list item is a tuple: ``(word, weight)``, where
     *weight* is a float. If it's *False*, then each list item is a string.
 
-    :param s: The Chinese text analyze. *s* should be Unicode or a UTF-8
+    This uses the NLPIR function ``NLPIR_GetKeyWords`` to determine the key
+    words in *s*.
+
+    :param s: The Chinese text to analyze. *s* should be Unicode or a UTF-8
         encoded string.
     :param int max_words: The maximum number of key words (up to ``50``) to
         find (defaults to ``50``).
