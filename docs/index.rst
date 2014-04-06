@@ -16,14 +16,18 @@ ICTCLAS (Institute of Computing Technology, Chinese Lexical Analysis System).
 NLPIR/ICTCLAS is freely available for non-commerical use. The NLPIR/ICTCLAS
 binary files included in PyNLPIR run on 32-bit/64-bit Windows or GNU/Linux.
 
-PyNLPIR's wrapper doesn't provide a one-to-one API with NLPIR/ICTCLAS. Instead,
-a fairly typical Python API is wrapped around NLPIR/ICTCLAS's native API.
+If this is your first time using PyNLPIR, check out :doc:`installation`. Then read
+the :doc:`tutorial`.
+
+If you want a more in-depth view of PyNLPIR, check out the :doc:`api`.
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   installation
+   tutorial
    api
 
 

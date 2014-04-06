@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Part of speech mapping constants and functions for NLPIR/ICTCLAS."""
+"""Part of speech mapping constants and functions for NLPIR/ICTCLAS.
 
+This module is used by :mod:`pynlpir` to format segmented words for output.
+
+"""
 from __future__ import unicode_literals
 
 
@@ -160,7 +163,6 @@ def get_pos_name(code, name='parent', english=True):
         names should be used, e.g. ``('noun', 'toponym',
         'transcribed toponym')`` for ``'nsf'``.
     :param bool english: Whether to return an English or Chinese name.
-
     :returns: ``str`` (``unicode`` for Python 2) if *name* is ``'parent'`` or
         ``'child'``. ``tuple`` if *name* is ``'all'``.
 
