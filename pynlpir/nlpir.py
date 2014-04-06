@@ -152,7 +152,7 @@ FileProcess = get_func('NLPIR_FileProcess', [c_char_p, c_char_p, c_int],
                        c_double)
 ImportUserDict = get_func('NLPIR_ImportUserDict', [c_char_p], c_uint)
 AddUserWord = get_func('NLPIR_AddUserWord', [c_char_p])
-SaveTheUsrDic = get_func('NLPIR_SaveTheUsrDict')
+SaveTheUsrDic = get_func('NLPIR_SaveTheUsrDic')
 DelUsrWord = get_func('NLPIR_DelUsrWord', [c_char_p])
 GetKeyWords = get_func('NLPIR_GetKeyWords', [c_char_p, c_int, c_bool],
                        c_char_p)
