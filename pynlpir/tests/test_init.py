@@ -15,9 +15,9 @@ class TestNLPIR(unittest.TestCase):
         """Tests that the segment() function works as expected."""
         s = '我们都是美国人。'
         seg_s = pynlpir.segment(s, pos_tagging=False)
-        pos_seg_s = pynlpir.segment(s, pos_tagging=True)
-        npos_seg_s = pynlpir.segment(s, pos_tagging=True, pos_names=False)
-        ppos_seg_s = pynlpir.segment(s, pos_tagging=True, parents=True)
+        pos_seg_s = pynlpir.segment(s, pos_tagging=True, pos_names='child')
+        npos_seg_s = pynlpir.segment(s, pos_tagging=True, pos_names=None)
+        ppos_seg_s = pynlpir.segment(s, pos_tagging=True, pos_names='all')
         expected_seg_s = ['我们', '都', '是', '美国', '人', '。']
         expected_pos_seg_s = [('我们', 'personal pronoun'), ('都', 'adverb'),
                               ('是', 'verb 是'), ('美国', 'transcribed toponym'),
