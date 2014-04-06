@@ -60,7 +60,7 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING):
         raise ValueError("encoding must be one of 'utf_8', 'big5', or 'gbk'.")
     logger.debug("Initializing the NLPIR API: {'data_dir': '%s', 'encoding': "
                  "'%s'}" % (data_dir, encoding))
-    if not nlpir.Init(data_dir, encoding_constant):
+    if not nlpir.Init(data_dir, encoding_constant, ''):
         raise RuntimeError("NLPIR function 'NLPIR_Init' failed.")
     else:
         logger.debug("NLPIR API initialized.")
