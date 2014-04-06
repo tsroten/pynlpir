@@ -145,7 +145,7 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
     logger.debug("Segmenting text with%s POS tagging: %s." %
                  ('' if pos_tagging else 'out', s))
     result = nlpir.ParagraphProcess(_encode(s), pos_tagging)
-    result = result.decode('utf_8')
+    result = _decode(result)
     logger.debug("Finished segmenting text: %s." % result)
     logger.debug("Formatting segmented text.")
     tokens = result.strip().split(' ')
@@ -182,7 +182,7 @@ def get_key_words(s, max_words=50, weighted=False):
     logger.debug("Searching for up to %s%s key words in: %s." %
                  (max_words, ' weighted' if weighted else '', s))
     result = nlpir.GetKeyWords(_encode(s), max_words, weighted)
-    result = result.decode('utf_8')
+    result = _decode(result)
     logger.debug("Finished key word search: %s." % result)
     logger.debug("Formatting key word search results.")
     fresult = result.strip('#').split('#')
