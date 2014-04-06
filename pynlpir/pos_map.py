@@ -5,7 +5,10 @@ This module is used by :mod:`pynlpir` to format segmented words for output.
 
 """
 from __future__ import unicode_literals
+import logging
 
+
+logger = logging.getLogger('pynlpir.pos_map')
 
 #: A dictionary that maps part of speech codes returned by NLPIR to
 #: human-readable names (English and Chinese).
@@ -131,6 +134,8 @@ def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
     if names not in ('parent', 'child', 'all'):
         raise ValueError("names must be one of 'parent', 'child', or "
                          "'all'; not '%s'" % names)
+    logger.debug("Getting %s POS name for '%s' formatted as '%s'." %
+                 ('English' if english else 'Chinese', pos_code, names))
     for i in range(1, len(pos_code) + 1):
         try:
             pos_key = pos_code[0:i]
@@ -147,7 +152,9 @@ def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
         sub_map = pos_entry[2]
         sub_pos = _get_pos_name(pos_code, names, english, sub_map)
         pos = pos + sub_pos if names == 'all' else (sub_pos, )
-    return pos if names == 'all' else pos[-1]
+    name = pos if names == 'all' else pos[-1]
+    logger.debug("Part of speech name found: '%s'" % name)
+    return name
 
 
 def get_pos_name(code, name='parent', english=True):
