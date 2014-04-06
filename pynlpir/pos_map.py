@@ -147,13 +147,17 @@ def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
                                  pos_code)
     pos = (pos_entry[1 if english else 0], )
     if names == 'parent':
+        logger.debug("Part of speech name found: '%s'" % pos[0])
         return pos[0]
     if len(pos_entry) == 3 and pos_key != pos_code:
         sub_map = pos_entry[2]
+        logger.debug("Found parent part of speech name '%s'. Descending to "
+                     "look for child name for '%s'" % (pos_entry[1], pos_code))
         sub_pos = _get_pos_name(pos_code, names, english, sub_map)
         pos = pos + sub_pos if names == 'all' else (sub_pos, )
     name = pos if names == 'all' else pos[-1]
-    logger.debug("Part of speech name found: '%s'" % name)
+    logger.debug("Part of speech name found: '%s'" % repr(name)
+                 if isinstance(name, tuple) else name)
     return name
 
 
