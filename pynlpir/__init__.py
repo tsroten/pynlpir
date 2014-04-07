@@ -202,5 +202,8 @@ def get_key_words(s, max_words=50, weighted=False):
             weights.append(weight or 0.0)
             words.append(word)
         fresult = zip(words, weights)
+    if is_python3:
+        # Return a list instead of a zip object in Python 3.
+        fresult = list(fresult)
     logger.debug("Key words formatted: %s." % fresult)
     return fresult
