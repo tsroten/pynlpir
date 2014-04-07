@@ -47,12 +47,14 @@ Once you've initialized NLPIR, you can start segmenting and analyzing text.
 Segmenting Text
 ~~~~~~~~~~~~~~~
 
+Let's segment a lengthy sentence:
+
 .. code:: python
 
     s = 'NLPIR分词系统前身为2000年发布的ICTCLAS词法分析系统，从2009年开始，为了和以前工作进行大的区隔，并推广NLPIR自然语言处理与信息检索共享平台，调整命名为NLPIR分词系统。'
     pynlpir.segment(s)
 
-    [('NLPIR', 'noun'), ('分词', 'verb'), ('系统', 'noun'), ('前身', 'noun'), ('为', 'preposition'), ('2000年', 'time word'), ('发布', 'verb'), . . . ]
+    # Sample output: [('NLPIR', 'noun'), ('分词', 'verb'), ('系统', 'noun'), ('前身', 'noun'), ('为', 'preposition'), ('2000年', 'time word'), ('发布', 'verb'), . . . ]
 
 If you don't want part of speech tagging, call :func:`~pynlpir.segment` with
 *pos_tagging* set to ``False``:
@@ -61,7 +63,7 @@ If you don't want part of speech tagging, call :func:`~pynlpir.segment` with
 
     pynlpir.segment(s, pos_tagging=False)
 
-    ['NLPIR', '分词', '系统', '前身', '为', '2000年', '发布', . . . ]
+    # Sample output: ['NLPIR', '分词', '系统', '前身', '为', '2000年', '发布', . . . ]
 
 You can also customize how the part of speech tags are shown. By default,
 only the most generic part of speech name is used, i.e. the parent (for example,
