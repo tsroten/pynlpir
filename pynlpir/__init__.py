@@ -46,6 +46,7 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING):
         more detailed messages (but this isn't always the case).
 
     """
+    license = ''  # The license argument is required by NLPIR_Init.
     global ENCODING
     if encoding.lower() in ('utf_8', 'utf-8', 'u8', 'utf', 'utf8'):
         ENCODING = 'utf_8'
@@ -59,8 +60,15 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING):
     else:
         raise ValueError("encoding must be one of 'utf_8', 'big5', or 'gbk'.")
     logger.debug("Initializing the NLPIR API: {'data_dir': '%s', 'encoding': "
-                 "'%s'}" % (data_dir, encoding))
-    if not nlpir.Init(data_dir, encoding_constant, ''):
+                 "'%s', 'license': '%s'}" % (data_dir, encoding, license))
+
+    # Init in Python 3 expects bytes, not strings.
+    if is_python3 and isinstance(data_dir, str):
+        data_dir = _encode(data_dir)
+    if is_python3 and isinstance(license, str):
+        license = _encode(license)
+
+    if not nlpir.Init(data_dir, encoding_constant, license):
         raise RuntimeError("NLPIR function 'NLPIR_Init' failed.")
     else:
         logger.debug("NLPIR API initialized.")
