@@ -117,7 +117,8 @@ allocated memory.
 .. data:: PACKAGE_DIR
 
     The absolute path to this package (used by NLPIR to find its ``Data``
-    directory).
+    directory). This is a string in Python 2 and a bytes object in Python 3
+    (so it can be used with the :func:`Init` function below).
 
 .. data:: LIB_DIR
 
