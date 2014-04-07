@@ -6,7 +6,7 @@ with open('README.rst') as f:
 
 setup(
     name='PyNLPIR',
-    version='0.1.1dev',
+    version='0.1.1',
     author='Thomas Roten',
     author_email='thomas@roten.us',
     url='https://github.com/tsroten/pynlpir',
