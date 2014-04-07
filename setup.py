@@ -10,8 +10,8 @@ setup(
     author='Thomas Roten',
     author_email='thomas@roten.us',
     url='https://github.com/tsroten/pynlpir',
-    description=('A Python wrapper for the NLPIR/ICTCLAS Chinese segmentation '
-                 'software.'),
+    description=('A Python wrapper around the NLPIR/ICTCLAS Chinese '
+                 'segmentation software.'),
     long_description=long_description,
     platforms=['win32', 'win64', 'linux32', 'linux64'],
     classifiers=[

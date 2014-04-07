@@ -1,7 +1,7 @@
 PyNLPIR
 =======
 
-PyNLPIR is a Python wrapper for the
+PyNLPIR is a Python wrapper around the
 `NLPIR/ICTCLAS Chinese segmentation software <http://nlpir.org>`_.
 
 Easily segment text using NLPIR, one of the most widely-regarded Chinese text
