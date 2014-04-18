@@ -87,13 +87,17 @@ def close():
         logger.debug("NLPIR API exited.")
 
 
-def _decode(s, encoding=ENCODING):
+def _decode(s, encoding=None):
     """Decodes *s*."""
+    if encoding is None:
+        encoding = ENCODING
     return s if isinstance(s, unicode) else s.decode(encoding)
 
 
-def _encode(s, encoding=ENCODING):
+def _encode(s, encoding=None):
     """Encodes *s*."""
+    if encoding is None:
+        encoding = ENCODING
     return s.encode(encoding) if isinstance(s, unicode) else s
 
 
