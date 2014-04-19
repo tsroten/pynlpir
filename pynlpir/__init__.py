@@ -130,6 +130,10 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
     *pos_tagging* is `True`, then each item is a tuple (``(token, pos)``), e.g.
     ``[('我们', 'pronoun'), ('是', 'verb'), ...]``.
 
+    If *pos_tagging* is `True` and a segmented word is not recognized by
+    NLPIR's part of speech tagger, then the part of speech code/name will
+    be returned as :data:`None` (e.g. a space returns as ``(' ', None)``).
+
     This uses the function :func:`~pynlpir.nlpir.ParagraphProcess` to segment
     *s*.
 
@@ -160,13 +164,16 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
     result = _decode(result)
     logger.debug("Finished segmenting text: %s." % result)
     logger.debug("Formatting segmented text.")
-    tokens = result.strip().split(' ')
+    tokens = result.strip().replace('  ', ' ').split(' ')
+    tokens = [' ' if t == '' else t for t in tokens]
     if pos_tagging:
         for i, t in enumerate(tokens):
             token = tuple(t.split('/'))
-            if pos_names is not None:
-                token = (token[0],
-                         _get_pos_name(token[1], pos_names, pos_english))
+            if len(token) == 1:
+                token = (token[0], None)
+            if pos_names is not None and token[1] is not None:
+                pos_name = _get_pos_name(token[1], pos_names, pos_english)
+                token = (token[0], pos_name)
             tokens[i] = token
     logger.debug("Formatted segmented text: %s." % tokens)
     return tokens

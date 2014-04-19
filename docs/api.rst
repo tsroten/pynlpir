@@ -54,6 +54,10 @@ the API.
     *pos_tagging* is `True`, then each item is a tuple (``(token, pos)``), e.g.
     ``[('我们', 'pronoun'), ('是', 'verb'), ...]``.
 
+    If *pos_tagging* is `True` and a segmented word is not recognized by
+    NLPIR's part of speech tagger, then the part of speech code/name will
+    be returned as :data:`None` (e.g. a space returns as ``(' ', None)``).
+
     This uses the function :func:`~pynlpir.nlpir.ParagraphProcess` to segment
     *s*.
 

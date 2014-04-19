@@ -33,6 +33,18 @@ class TestNLPIR(unittest.TestCase):
         self.assertEqual(expected_npos_seg_s, npos_seg_s)
         self.assertEqual(expected_ppos_seg_s, ppos_seg_s)
 
+    def test_segment_space(self):
+        """Tests that the fix for issue #2 works."""
+        s = '这个句子有 空格。'
+        seg_s = pynlpir.segment(s, pos_tagging=False)
+        pos_seg_s = pynlpir.segment(s)
+        expected_seg_s = ['这个', '句子', '有', ' ', '空格', '。']
+        expected_pos_seg_s = [('这个', 'pronoun'), ('句子', 'noun'),
+                              ('有', 'verb'), (' ', None), ('空格', 'noun'),
+                              ('。', 'punctuation mark')]
+        self.assertEqual(expected_seg_s, seg_s)
+        self.assertEqual(expected_pos_seg_s, pos_seg_s)
+
     def test_get_key_words(self):
         """Tests that the get_key_words() function works as expected."""
         s = '我们都是美国人。'
