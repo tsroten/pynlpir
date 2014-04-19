@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 """Provides an easy-to-use Python interface to NLPIR/ICTCLAS.
 
 The functions below are not as extensive as the full set of functions exported
@@ -15,11 +16,14 @@ the NLPIR API. When you're done using the NLPIR API, call :func:`close` to exit
 the API.
 
 """
+
 from __future__ import unicode_literals
 import logging
 import sys
 
 from . import nlpir, pos_map
+
+__version__ = '0.1.1'
 
 logger = logging.getLogger('pynlpir')
 
