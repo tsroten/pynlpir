@@ -1,8 +1,23 @@
+=======
 PyNLPIR
 =======
 
+.. image:: https://badge.fury.io/py/pynlpir.png
+    :target: http://badge.fury.io/py/pynlpir
+
+.. image:: https://travis-ci.org/tsroten/pynlpir.png?branch=develop
+        :target: https://travis-ci.org/tsroten/pynlpir
+
 PyNLPIR is a Python wrapper around the
 `NLPIR/ICTCLAS Chinese segmentation software <http://nlpir.org>`_.
+
+* Documentation: http://pynlpir.rtfd.org
+* GitHub: https://github.com/tsroten/pynlpir
+* Support: https://github.com/tsroten/pynlpir/issues
+* Free software: `MIT license <http://opensource.org/licenses/MIT>`_
+
+About
+-----
 
 Easily segment text using NLPIR, one of the most widely-regarded Chinese text
 analyzers:
@@ -26,38 +41,12 @@ Features
 * Access to NLPIR's C functions via ``ctypes``
 * No third-party dependencies (PyNLPIR includes a copy of NLPIR)
 * Runs on Python 2.7 and 3
+* Supports Linux and Windows (no OS X support until NLPIR supports it)
 
-Install
--------
+Getting Started
+---------------
 
-NLPIR supports Windows and GNU/Linux. PyNLPIR will install, but not run, on other
-platforms (e.g. OS X).
-
-Just use `pip <http://www.pip-installer.org/>`_:
-
-.. code:: bash
-
-    $ pip install pynlpir
-
-That's it! Everything is shipped with PyNLPIR -- there are no external dependencies.
-
-Documentation
--------------
-
-PyNLPIR has `documentation <http://pynlpir.readthedocs.org>`_. It features an
-installation guide, tutorial, and API reference.
-
-Support
--------
-
-If you encounter a bug, have a feature request, or need help using PyNLPIR, then use
-`PyNLPIR's GitHub Issues page <https://github.com/tsroten/pynlpir/issues>`_ to
-get in touch.
-
-License
--------
-
-PyNLPIR is released under the OSI-approved
-`MIT License <http://opensource.org/licenses/MIT>`_. See the file ``LICENSE.txt``
-for more information. This license doesn't apply to the included copies of NLPIR's
-data directory and shared libraries.
+* `Install PyNLPIR <http://pynlpir.readthedocs.org/en/latest/installation.html>`_
+* Read `PyNLPIR's tutorial <http://pynlpir.readthedocs.org/en/latest/tutorial.html>`_
+* Learn from the `API documentation <http://pynlpir.readthedocs.org/en/latest/api.html>`_
+* `Contribute <http://pynlpir.readthedocs.org/en/latest/contributing.html>`_ documentation, code, or feedback
