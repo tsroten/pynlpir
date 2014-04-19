@@ -54,3 +54,6 @@ Documentation Contents
    installation
    tutorial
    api
+   contributing
+   history
+   authors
