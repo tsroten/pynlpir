@@ -9,8 +9,8 @@ Welcome to PyNLPIR's documentation!
 PyNLPIR is a Python wrapper around the
 `NLPIR/ICTCLAS Chinese segmentation software <http://nlpir.org>`_.
 
-Easily segment text using NLPIR, one of the most widely-regarded Chinese text
-analyzers:
+PyNLPIR allows you to easily segment Chinee text using NLPIR,
+one of the most widely-regarded Chinese text analyzers:
 
 .. code:: python
 
@@ -27,26 +27,19 @@ the :doc:`tutorial`.
 
 If you want a more in-depth view of PyNLPIR, check out the :doc:`api`.
 
-Features
---------
+If you're looking to help out, check out :doc:`contributing`.
 
-* Helper functions for common use cases
-* English/Chinese part of speech mapping
-* Support for UTF-8, GBK, and BIG5 encoded strings (and unicode of course!)
-* Access to NLPIR's C functions via ``ctypes``
-* No third-party dependencies (PyNLPIR includes a copy of NLPIR)
-* Runs on Python 2.7 and 3
 
 Support
 -------
 
 If you encounter a bug, have a feature request, or need help using PyNLPIR, then use
-`PyNLPIR's GitHub Issues page <https://github.com/tsroten/pynlpir/issues>`_ to
-get in touch.
+`PyNLPIR's GitHub Issues page <https://github.com/tsroten/pynlpir/issues>`_ to send
+feedback.
 
 
 Documentation Contents
-======================
+----------------------
 
 .. toctree::
    :maxdepth: 2
