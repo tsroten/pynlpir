@@ -1,19 +1,44 @@
-from setuptools import setup
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-with open('README.rst') as f:
-    long_description = f.read()
+import os
+import sys
 
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
+import pynlpir
+
+if sys.argv[-1] == 'publish':
+    os.system('python setup.py sdist upload')
+    sys.exit()
+
+def open_file(filename):
+    """Open and read the file *filename*."""
+    with open(filename) as f:
+        return f.read()
+
+readme = open_file('README.rst')
+history = open_file('CHANGES.rst').replace('.. :changelog:', '')
 
 setup(
     name='PyNLPIR',
-    version='0.1.1',
+    version=pynlpir.__version__,
     author='Thomas Roten',
     author_email='thomas@roten.us',
     url='https://github.com/tsroten/pynlpir',
     description=('A Python wrapper around the NLPIR/ICTCLAS Chinese '
                  'segmentation software.'),
-    long_description=long_description,
-    platforms=['win32', 'win64', 'linux32', 'linux64'],
+    long_description=readme + '\n\n' + history,
+    platforms=[
+        'win32',
+        'win64',
+        'linux32',
+        'linux64'
+    ],
+    license='MIT',
     classifiers=[
         'Programming Language :: Python',
         'License :: OSI Approved :: MIT License',
@@ -22,14 +47,20 @@ setup(
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
         'Intended Audience :: Developers',
+        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
         'Topic :: Education',
         'Topic :: Text Processing :: Linguistic',
         'Topic :: Software Development :: Libraries :: Python Modules',
         ],
-    keywords=['nlpir', 'ictclas', 'chinese', 'segmentation', 'nlp'],
-    packages=['pynlpir'],
-    package_data={'pynlpir': ['Data/*.*', 'Data/English/*', 'lib/*']},
+    keywords=['pynlpir', 'nlpir', 'ictclas', 'chinese', 'segmentation', 'nlp'],
+    packages=[
+        'pynlpir'
+    ],
+    package_data={
+        'pynlpir': ['Data/*.*', 'Data/English/*', 'lib/*']
+    },
     test_suite='pynlpir.tests'
 )
