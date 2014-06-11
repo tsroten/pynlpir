@@ -35,7 +35,7 @@ if is_python3:
 ENCODING = 'utf_8'
 
 
-def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING):
+def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING, license_code=None):
     """Initializes the NLPIR API.
 
     This calls the function :func:`~pynlpir.nlpir.Init`.
@@ -45,12 +45,15 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING):
     :param str encoding: The encoding that the Chinese source text will be in
         (defaults to ``'utf_8'``). Possible values include ``'gbk'``,
         ``'utf_8'``, or ``'big5'``.
+    :param str license_code: The license code that should be used when
+        initializing NLPIR. This is generally only used by commercial users.
     :raises RuntimeError: The NLPIR API failed to initialize. Sometimes, NLPIR
         leaves an error log in the current working directory that provides
         more detailed messages (but this isn't always the case).
 
     """
-    license = ''  # The license argument is required by NLPIR_Init.
+    if license_code is None:
+        license_code = ''
     global ENCODING
     if encoding.lower() in ('utf_8', 'utf-8', 'u8', 'utf', 'utf8'):
         ENCODING = 'utf_8'
@@ -64,15 +67,16 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING):
     else:
         raise ValueError("encoding must be one of 'utf_8', 'big5', or 'gbk'.")
     logger.debug("Initializing the NLPIR API: {'data_dir': '%s', 'encoding': "
-                 "'%s', 'license': '%s'}" % (data_dir, encoding, license))
+                 "'%s', 'license_code': '%s'}"
+                 % (data_dir, encoding, license_code))
 
     # Init in Python 3 expects bytes, not strings.
     if is_python3 and isinstance(data_dir, str):
         data_dir = _encode(data_dir)
-    if is_python3 and isinstance(license, str):
-        license = _encode(license)
+    if is_python3 and isinstance(license_code, str):
+        license_code = _encode(license_code)
 
-    if not nlpir.Init(data_dir, encoding_constant, license):
+    if not nlpir.Init(data_dir, encoding_constant, license_code):
         raise RuntimeError("NLPIR function 'NLPIR_Init' failed.")
     else:
         logger.debug("NLPIR API initialized.")
