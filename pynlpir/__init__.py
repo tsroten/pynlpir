@@ -176,7 +176,7 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
     tokens = [' ' if t == '' else t for t in tokens]
     if pos_tagging:
         for i, t in enumerate(tokens):
-            token = tuple(t.split('/'))
+            token = tuple(t.rsplit('/', 1))
             if len(token) == 1:
                 token = (token[0], None)
             if pos_names is not None and token[1] is not None:

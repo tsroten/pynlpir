@@ -54,3 +54,14 @@ class TestNLPIR(unittest.TestCase):
         expected_weighted_key_words = [('美国', 0.01)]
         self.assertEqual(expected_key_words, key_words)
         self.assertEqual(expected_weighted_key_words, weighted_key_words)
+
+    def test_double_slash(self):
+        """Tests for issue #7 -- double slashes raises exception."""
+        s = '转发微博 //@张明明:霸气全露'
+        seg_s = pynlpir.segment(s)
+        expected_seg_s = [('转发', 'verb'), ('微', 'adjective'),
+                          ('博', 'adjective'), (' ', None),
+                          ('//', 'locative word'), ('@张明明', 'noun'),
+                          (':', 'punctuation mark'), ('霸气', 'noun'),
+                          ('全', 'adverb'), ('露', 'verb')]
+        self.assertEqual(expected_seg_s, seg_s)
