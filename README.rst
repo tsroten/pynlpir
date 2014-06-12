@@ -2,6 +2,8 @@
 PyNLPIR
 =======
 
+NOTE: Until a new NLPIR version is released, the ``pynlpir.get_key_words`` and ``pynlpir.nlpir.GetKeyWords`` functions won't work.
+
 .. image:: https://badge.fury.io/py/pynlpir.png
     :target: http://badge.fury.io/py/pynlpir
 

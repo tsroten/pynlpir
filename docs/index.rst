@@ -9,7 +9,7 @@ Welcome to PyNLPIR's documentation!
 PyNLPIR is a Python wrapper around the
 `NLPIR/ICTCLAS Chinese segmentation software <http://nlpir.org>`_.
 
-PyNLPIR allows you to easily segment Chinee text using NLPIR,
+PyNLPIR allows you to easily segment Chinese text using NLPIR,
 one of the most widely-regarded Chinese text analyzers:
 
 .. code:: python
