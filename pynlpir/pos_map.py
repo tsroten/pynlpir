@@ -102,7 +102,7 @@ POS_MAP = {
     'y': ('语气词', 'modal particle'),
     'o': ('拟声词', 'onomatopoeia'),
     'h': ('前缀', 'prefix'),
-    'k': ('后缀' 'suffix'),
+    'k': ('后缀', 'suffix'),
     'x': ('字符串', 'string', {
         'xe': ('Email字符串', 'email address'),
         'xs': ('微博会话分隔符', 'hashtag'),
