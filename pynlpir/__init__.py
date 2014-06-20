@@ -212,7 +212,7 @@ def get_key_words(s, max_words=50, weighted=False):
     result = _decode(result)
     logger.debug("Finished key word search: %s." % result)
     logger.debug("Formatting key word search results.")
-    fresult = result.strip('#').split('#')
+    fresult = result.strip('#').split('#') if result else []
     if weighted:
         weights, words = [], []
         for w in fresult:
