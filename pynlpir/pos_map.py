@@ -131,6 +131,7 @@ POS_MAP = {
 
 def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
     """Gets the part of speech name for *pos_code*."""
+    pos_code = pos_code.lower()  # Issue #10
     if names not in ('parent', 'child', 'all'):
         raise ValueError("names must be one of 'parent', 'child', or "
                          "'all'; not '%s'" % names)
