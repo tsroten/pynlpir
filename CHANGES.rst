@@ -3,6 +3,20 @@
 Change Log
 ----------
 
+0.2 (2014-12-18)
+++++++++++++++++
+
+* Packages NLPIR version 20140926. Restores ``pynlpir.get_key_words`` functionality. Fixes #11, #14, and #15.
+* Updates part of speech map for new NLPIR version. Fixes #17.
+* Fixes a typo in ``api.rst``. Fixes #16.
+* Fixes a bug involving uppercase part of speech codes. Fixes #10.
+* Adds Python 3.4 test to tox and travis.
+* Notes Python 3.4 support in ``setup.py`` and ``CONTRIBUTING.rst``.
+* Fixes the doubleslash unit test so that it works with the new NLPIR version.
+* Adds a missing comma. Fixes #8.
+* Fixes indentation in ``pynlpir.get_key_words``.
+* Adds condition for empty key word result. Fixes #9.
+
 0.1.3 (2014-06-12)
 ++++++++++++++++++
 
