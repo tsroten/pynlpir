@@ -61,7 +61,7 @@ class TestNLPIR(unittest.TestCase):
         seg_s = pynlpir.segment(s)
         expected_seg_s = [('转发', 'verb'), ('微', 'adjective'),
                           ('博', 'adjective'), (' ', None),
-                          ('//', 'locative word'), ('@张明明', 'noun'),
+                          ('//', 'string'), ('@张明明', 'noun'),
                           (':', 'punctuation mark'), ('霸气', 'noun'),
                           ('全', 'adverb'), ('露', 'verb')]
         self.assertEqual(expected_seg_s, seg_s)
