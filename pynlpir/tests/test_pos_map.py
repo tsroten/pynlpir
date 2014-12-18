@@ -79,3 +79,7 @@ class TestPOSMap(unittest.TestCase):
     def test_uppercase_code(self):
         """Tests for issue 10 - uppercase pos code raises ValueError."""
         self.assertEqual('pronoun', pos_map.get_pos_name('Rg'))
+
+    def test_xx_pos_code(self):
+        """Tests for issue 17 - xx pos code."""
+        self.assertEqual('string', pos_map.get_pos_name('xx'))
