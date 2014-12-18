@@ -106,6 +106,7 @@ Some codes have child codes as well (e.g. ``'n'`` is the parent to
             'xs': ('微博会话分隔符', 'hashtag'),
             'xm': ('表情符合', 'emoticon'),
             'xu': ('网址URL', 'URL'),
+            'xx': ('非语素字', 'non-morpheme character'),
         }),
         'w': ('标点符号', 'punctuation mark', {
             'wkz': ('左括号', 'left parenthesis/bracket'),

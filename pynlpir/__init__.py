@@ -23,7 +23,7 @@ import sys
 
 from . import nlpir, pos_map
 
-__version__ = '0.1.3'
+__version__ = '0.2'
 
 logger = logging.getLogger('pynlpir')
 
@@ -212,17 +212,17 @@ def get_key_words(s, max_words=50, weighted=False):
     result = _decode(result)
     logger.debug("Finished key word search: %s." % result)
     logger.debug("Formatting key word search results.")
-    fresult = result.strip('#').split('#')
+    fresult = result.strip('#').split('#') if result else []
     if weighted:
         weights, words = [], []
         for w in fresult:
-            word, pos, weight = w.split('/')
+            word, pos, weight, count = w.split('/')
             weight = _to_float(weight)
             weights.append(weight or 0.0)
             words.append(word)
         fresult = zip(words, weights)
-    if is_python3:
-        # Return a list instead of a zip object in Python 3.
-        fresult = list(fresult)
+        if is_python3:
+            # Return a list instead of a zip object in Python 3.
+            fresult = list(fresult)
     logger.debug("Key words formatted: %s." % fresult)
     return fresult

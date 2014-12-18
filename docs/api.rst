@@ -38,7 +38,7 @@ the API.
         ``'utf_8'``, or ``'big5'``.
     :param str license_code: The license code that should be used when
         initializing NLPIR. This is generally only used by commercial users.
-    :raises ValueError: The NLPIR API failed to initialize. Sometimes, NLPIR
+    :raises RuntimeError: The NLPIR API failed to initialize. Sometimes, NLPIR
         leaves an error log in the current working directory that provides
         more detailed messages (but this isn't always the case).
 

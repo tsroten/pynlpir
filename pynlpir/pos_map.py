@@ -102,12 +102,13 @@ POS_MAP = {
     'y': ('语气词', 'modal particle'),
     'o': ('拟声词', 'onomatopoeia'),
     'h': ('前缀', 'prefix'),
-    'k': ('后缀' 'suffix'),
+    'k': ('后缀', 'suffix'),
     'x': ('字符串', 'string', {
         'xe': ('Email字符串', 'email address'),
         'xs': ('微博会话分隔符', 'hashtag'),
         'xm': ('表情符合', 'emoticon'),
         'xu': ('网址URL', 'URL'),
+        'xx': ('非语素字', 'non-morpheme character'),
     }),
     'w': ('标点符号', 'punctuation mark', {
         'wkz': ('左括号', 'left parenthesis/bracket'),
@@ -131,6 +132,7 @@ POS_MAP = {
 
 def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
     """Gets the part of speech name for *pos_code*."""
+    pos_code = pos_code.lower()  # Issue #10
     if names not in ('parent', 'child', 'all'):
         raise ValueError("names must be one of 'parent', 'child', or "
                          "'all'; not '%s'" % names)
