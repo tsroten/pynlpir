@@ -74,7 +74,8 @@ class TestPOSMap(unittest.TestCase):
         self.assertEqual('名词', nrf_name)
 
     def test_get_pos_name_wrong_code(self):
-        self.assertRaises(ValueError, pos_map.get_pos_name, 'i')
+        """Tests that errors are silenced and None is returned - issue 20."""
+        self.assertEqual(None, pos_map.get_pos_name('gms'))
 
     def test_uppercase_code(self):
         """Tests for issue 10 - uppercase pos code raises ValueError."""

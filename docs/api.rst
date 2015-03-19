@@ -404,4 +404,5 @@ This module is used by :mod:`pynlpir` to format segmented words for output.
         'transcribed toponym')`` for ``'nsf'``.
     :param bool english: Whether to return an English or Chinese name.
     :returns: ``str`` (``unicode`` for Python 2) if *name* is ``'parent'`` or
-        ``'child'``. ``tuple`` if *name* is ``'all'``.
+        ``'child'``. ``tuple`` if *name* is ``'all'``. :data:`None` if the part
+        of speech code is not recognized.
