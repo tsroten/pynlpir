@@ -65,3 +65,10 @@ class TestNLPIR(unittest.TestCase):
                           (':', 'punctuation mark'), ('霸气', 'noun'),
                           ('全', 'adverb'), ('露', 'verb')]
         self.assertEqual(expected_seg_s, seg_s)
+
+    def test_issue_23(self):
+        """Tests for issue #20 -- get key words with no count returned."""
+        s = '我们很好,你呢'
+        weighted_key_words = pynlpir.get_key_words(s, weighted=True)
+        expected_weighted_key_words = [('我们', -1.00)]
+        self.assertEqual(expected_weighted_key_words, weighted_key_words)

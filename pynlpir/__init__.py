@@ -216,7 +216,8 @@ def get_key_words(s, max_words=50, weighted=False):
     if weighted:
         weights, words = [], []
         for w in fresult:
-            word, pos, weight, count = w.split('/')
+            result = w.split('/')
+            word, weight = result[0], result[2]
             weight = _to_float(weight)
             weights.append(weight or 0.0)
             words.append(word)
