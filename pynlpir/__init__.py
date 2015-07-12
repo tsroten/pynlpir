@@ -34,8 +34,12 @@ if is_python3:
 #: The encoding configured by :func:`open`.
 ENCODING = 'utf_8'
 
+#: The encoding error handling scheme configured by :func:`open`.
+ENCODING_ERRORS = 'strict'
 
-def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING, license_code=None):
+
+def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
+         encoding_errors=ENCODING_ERRORS, license_code=None):
     """Initializes the NLPIR API.
 
     This calls the function :func:`~pynlpir.nlpir.Init`.
@@ -45,6 +49,11 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING, license_code=None):
     :param str encoding: The encoding that the Chinese source text will be in
         (defaults to ``'utf_8'``). Possible values include ``'gbk'``,
         ``'utf_8'``, or ``'big5'``.
+    :param str encoding_errors: The desired encoding error handling scheme.
+        Possible values include ``'strict'``, ``'ignore'``, and ``'replace'``.
+        The default error handler is 'strict' meaning that encoding errors
+        raise :class:`ValueError` (or a more codec specific subclass, such
+        as :class:`UnicodeEncodeError`).
     :param str license_code: The license code that should be used when
         initializing NLPIR. This is generally only used by commercial users.
     :raises RuntimeError: The NLPIR API failed to initialize. Sometimes, NLPIR
@@ -69,6 +78,13 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING, license_code=None):
     logger.debug("Initializing the NLPIR API: {'data_dir': '%s', 'encoding': "
                  "'%s', 'license_code': '%s'}"
                  % (data_dir, encoding, license_code))
+
+    global ENCODING_ERRORS
+    if encoding_errors not in ('strict', 'ignore', 'replace'):
+        raise ValueError("encoding_errors must be one of 'strict', 'ignore', "
+                         "or 'replace'.")
+    else:
+        ENCODING_ERRORS = encoding_errors
 
     # Init in Python 3 expects bytes, not strings.
     if is_python3 and isinstance(data_dir, str):
@@ -95,18 +111,18 @@ def close():
         logger.debug("NLPIR API exited.")
 
 
-def _decode(s, encoding=None):
+def _decode(s, encoding=None, errors=ENCODING_ERRORS):
     """Decodes *s*."""
     if encoding is None:
         encoding = ENCODING
-    return s if isinstance(s, unicode) else s.decode(encoding)
+    return s if isinstance(s, unicode) else s.decode(encoding, errors)
 
 
-def _encode(s, encoding=None):
+def _encode(s, encoding=None, errors=ENCODING_ERRORS):
     """Encodes *s*."""
     if encoding is None:
         encoding = ENCODING
-    return s.encode(encoding) if isinstance(s, unicode) else s
+    return s.encode(encoding, errors) if isinstance(s, unicode) else s
 
 
 def _to_float(s):
