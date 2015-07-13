@@ -25,7 +25,8 @@ the API.
 
     The encoding configured by :func:`open`.
 
-.. function:: open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING, license_code=None)
+.. function:: open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
+                   encoding_errors=ENCODING_ERRORS, license_code=None)
 
     Initializes the NLPIR API.
 
@@ -36,6 +37,11 @@ the API.
     :param str encoding: The encoding that the Chinese source text will be in
         (defaults to ``'utf_8'``). Possible values include ``'gbk'``,
         ``'utf_8'``, or ``'big5'``.
+    :param str encoding_errors: The desired encoding error handling scheme.
+        Possible values include ``'strict'``, ``'ignore'``, and ``'replace'``.
+        The default error handler is 'strict' meaning that encoding errors
+        raise :class:`ValueError` (or a more codec specific subclass, such
+        as :class:`UnicodeEncodeError`).
     :param str license_code: The license code that should be used when
         initializing NLPIR. This is generally only used by commercial users.
     :raises RuntimeError: The NLPIR API failed to initialize. Sometimes, NLPIR
