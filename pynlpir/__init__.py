@@ -57,8 +57,9 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
     :param str license_code: The license code that should be used when
         initializing NLPIR. This is generally only used by commercial users.
     :raises RuntimeError: The NLPIR API failed to initialize. Sometimes, NLPIR
-        leaves an error log in the current working directory that provides
-        more detailed messages (but this isn't always the case).
+        leaves an error log in the current working directory or NLPIR's
+        ``Data`` directory that provides more detailed messages (but this isn't
+        always the case).
 
     """
     if license_code is None:
