@@ -25,8 +25,7 @@ the API.
 
     The encoding configured by :func:`open`.
 
-.. function:: open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
-                   encoding_errors=ENCODING_ERRORS, license_code=None)
+.. function:: open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING, encoding_errors=ENCODING_ERRORS, license_code=None)
 
     Initializes the NLPIR API.
 
