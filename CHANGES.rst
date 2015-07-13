@@ -3,15 +3,20 @@
 Change Log
 ----------
 
+0.3.1 (2015-07-12)
+++++++++++++++++++
+
+* Fixes RST rendering error.
+
 0.3 (2015-07-12)
 ++++++++++++++++
 
 * Includes NLPIR version 20150702. Fixes #25.
 * Adds encoding error handling scheme options.
 * Adds new word identification functions and documentation. Fixes #26.
-* Makes :func:`~pynlpir.get_key_words` work with multiple NLPIR return value
+* Makes ``~pynlpir.get_key_words`` work with multiple NLPIR return value
   structures. Fixes #23.
-* Returns :data:`None` when pos code not recognized. Fixes #20.
+* Returns ``None`` when pos code not recognized. Fixes #20.
 * Updates outdated link in tutorial. Fixes #21.
 
 0.2.2 (2015-01-02)
