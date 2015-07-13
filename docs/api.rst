@@ -39,8 +39,9 @@ the API.
     :param str license_code: The license code that should be used when
         initializing NLPIR. This is generally only used by commercial users.
     :raises RuntimeError: The NLPIR API failed to initialize. Sometimes, NLPIR
-        leaves an error log in the current working directory that provides
-        more detailed messages (but this isn't always the case).
+        leaves an error log in the current working directory or NLPIR's
+        ``Data`` directory that provides more detailed messages (but this isn't
+        always the case).
 
 .. function:: close
 
@@ -372,6 +373,59 @@ allocated memory.
         be one of :data:`ICT_POS_MAP_FIRST`, :data:`ICT_POS_MAP_SECOND`,
         :data:`PKU_POS_MAP_FIRST`, or :data:`PKU_POS_MAP_SECOND`.
     :returns: ``0`` if the function failed, otherwise ``1``.
+    :rtype: int
+
+.. function:: NWI_Start()
+
+    Initializes new word identification.
+
+    :returns: ``True`` if the function succeeded; ``False`` if it failed.
+    :rtype: bool
+
+.. function:: NWI_AddFile(filename)
+
+    Adds the words in a text file.
+
+    :param string filename: The text file's filename.
+    :returns: ``True`` if the function succeeded; ``False`` if it failed.
+    :rtype: bool
+
+.. function:: NWI_AddMem(filename)
+
+    Increases the allotted memory for new word identification.
+
+    :param string filename: NLPIR's documentation is unclear on what this
+        argument is for.
+    :returns: ``True`` if the function succeeded; ``False`` if it failed.
+    :rtype: bool
+
+.. function:: NWI_Complete()
+
+    Terminates new word identifcation. Frees up memory and resources.
+
+    :returns: ``True`` if the function succeeded; ``False`` if it failed.
+    :rtype: bool
+
+.. function:: NWI_GetResult(weight)
+
+    Returns the new word identification results.
+
+    :param bool weight: Whether or not to include word weights in the results.
+    :returns: ``True`` if the function succeeded; ``False`` if it failed.
+    :returns: The identified words.
+    :rtype: str
+
+.. function:: NWI_Results2UserDict()
+
+    Adds the newly identified words to the user dictionary.
+
+    This function should only be called after
+    :func:`~pynlpir.nlpir.NWI_Complete` is called.
+
+    If you want to save the user dictionary, consider running
+    :func:`~pynlpir.nlpir.SaveTheUsrDic`.
+
+    :returns: ``1`` if the function succeeded; ``0`` if it failed.
     :rtype: int
 
 
