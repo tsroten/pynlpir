@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from io import open
 import os
 import sys
 
@@ -17,7 +18,7 @@ if sys.argv[-1] == 'publish':
 
 def open_file(filename):
     """Open and read the file *filename*."""
-    with open(filename) as f:
+    with open(filename, encoding='utf-8') as f:
         return f.read()
 
 readme = open_file('README.rst')
