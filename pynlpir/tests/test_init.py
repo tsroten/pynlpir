@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import unittest
 
 import pynlpir
+from pynlpir.tests.utilities import timeout
 
 pynlpir.open()
 
@@ -72,3 +73,14 @@ class TestNLPIR(unittest.TestCase):
         weighted_key_words = pynlpir.get_key_words(s, weighted=True)
         expected_weighted_key_words = [('我们', -1.00)]
         self.assertEqual(expected_weighted_key_words, weighted_key_words)
+
+    def test_issue_33(self):
+        """Tests for issue #33 -- segment hangs with English and newline."""
+        s = 'E\n'
+        expected_seg_s = ['E']
+        timeout_segment = timeout(timeout=1)(pynlpir.segment)
+        try:
+            seg_s = timeout_segment(s, False)
+        except RuntimeError:
+            self.fail('Segment function timed out.')
+        self.assertEqual(expected_seg_s, seg_s)
