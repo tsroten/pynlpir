@@ -77,7 +77,7 @@ class TestNLPIR(unittest.TestCase):
     def test_issue_33(self):
         """Tests for issue #33 -- segment hangs with English and newline."""
         s = 'E\n'
-        expected_seg_s = 'E \n'
+        expected_seg_s = ['E']
         timeout_segment = timeout(timeout=1)(pynlpir.segment)
         try:
             seg_s = timeout_segment(s, False)
