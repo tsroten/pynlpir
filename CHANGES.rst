@@ -3,6 +3,15 @@
 Change Log
 ----------
 
+0.3.3 (2015-10-21)
+++++++++++++++++++
+
+* Fixes NLPIR freezing with certain inputs. Fixes #33.
+* Adds flake8 tests to tox and travis-ci.
+* Adds tests for Python 3.5 support.
+* Uses io.open() in setup.py. Fixes #34.
+
+
 0.3.2 (2015-08-05)
 ++++++++++++++++++
 
