@@ -23,7 +23,7 @@ import sys
 
 from . import nlpir, pos_map
 
-__version__ = '0.3.2'
+__version__ = '0.3.3'
 
 logger = logging.getLogger('pynlpir')
 
@@ -187,6 +187,7 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
 
     """
     s = _decode(s)
+    s = s.strip()
     logger.debug("Segmenting text with%s POS tagging: %s." %
                  ('' if pos_tagging else 'out', s))
     result = nlpir.ParagraphProcess(_encode(s), pos_tagging)

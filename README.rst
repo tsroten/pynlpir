@@ -9,7 +9,7 @@ PyNLPIR
         :target: https://travis-ci.org/tsroten/pynlpir
 
 PyNLPIR is a Python wrapper around the
-`NLPIR/ICTCLAS Chinese segmentation software <http://nlpir.org>`_.
+`NLPIR/ICTCLAS Chinese segmentation software <http://ictclas.nlpir.org>`_.
 
 * Documentation: http://pynlpir.rtfd.org
 * GitHub: https://github.com/tsroten/pynlpir
