@@ -41,7 +41,7 @@ Features
 * Access to NLPIR's C functions via ``ctypes``
 * No third-party dependencies (PyNLPIR includes a copy of NLPIR)
 * Runs on Python 2.7 and 3
-* Supports Linux and Windows (no OS X support until NLPIR supports it)
+* Supports OS X, Linux, and Windows
 
 Getting Started
 ---------------

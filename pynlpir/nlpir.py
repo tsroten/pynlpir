@@ -106,6 +106,9 @@ def load_library(platform, is_64bit, lib_dir=LIB_DIR):
     elif platform.startswith('linux'):
         lib = os.path.join(lib_dir, 'libNLPIR32.so')
         logger.debug("Using library file for 32-bit GNU/Linux.")
+    elif platform == 'darwin':
+        lib = os.path.join(lib_dir, 'libNLPIRios.so')
+        logger.debug("Using library file for OSX/iOS.")
     else:
         raise RuntimeError("Platform '%s' is not supported by NLPIR." %
                            platform)
