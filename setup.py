@@ -38,6 +38,7 @@ setup(
         'win64',
         'linux32',
         'linux64'
+        'darwin',
     ],
     license='MIT',
     classifiers=[
@@ -45,6 +46,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: Chinese (Simplified)',
         'Natural Language :: Chinese (Traditional)',
+        'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
         'Intended Audience :: Developers',
