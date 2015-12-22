@@ -52,7 +52,7 @@ class TestNLPIR(unittest.TestCase):
         key_words = pynlpir.get_key_words(s)
         weighted_key_words = pynlpir.get_key_words(s, weighted=True)
         expected_key_words = ['美国']
-        expected_weighted_key_words = [('美国', 0.01)]
+        expected_weighted_key_words = [('美国', 2.2)]
         self.assertEqual(expected_key_words, key_words)
         self.assertEqual(expected_weighted_key_words, weighted_key_words)
 
