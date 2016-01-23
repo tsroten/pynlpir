@@ -168,7 +168,7 @@ The Rest of the NLPIR Functions
 
 For a complete list of NLPIR functions that :mod:`pynlpir.nlpir` includes,
 check out the :doc:`api`. NLPIR's documentation is included in a PDF file in
-the `NLPIR/ICTCLAS 2015 download <http://ictclas.nlpir.org/downloads>`_.
+the `NLPIR/ICTCLAS 2016 download <http://ictclas.nlpir.org/downloads>`_.
 Consult it for detailed information on how to use NLPIR.
 
 What's Next
