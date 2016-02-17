@@ -32,11 +32,6 @@ PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
 #: The absolute path to this path's lib directory.
 LIB_DIR = os.path.join(PACKAGE_DIR, 'lib')
 
-is_python3 = sys.version_info[0] > 2
-if is_python3:
-    # Python 3 expects bytes for data type ctypes.c_char_p.
-    PACKAGE_DIR = PACKAGE_DIR.encode('utf_8')
-
 #: NLPIR's GBK encoding constant.
 GBK_CODE = 0
 #: NLPIR's UTF-8 encoding constant.
