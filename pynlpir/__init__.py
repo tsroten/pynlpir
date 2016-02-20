@@ -18,7 +18,9 @@ the API.
 """
 
 from __future__ import unicode_literals
+import datetime as dt
 import logging
+import os
 import sys
 
 from . import nlpir, pos_map
@@ -26,6 +28,8 @@ from . import nlpir, pos_map
 __version__ = '0.4.2'
 
 logger = logging.getLogger('pynlpir')
+
+fopen = open
 
 is_python3 = sys.version_info[0] > 2
 if is_python3:
@@ -36,6 +40,11 @@ ENCODING = 'utf_8'
 
 #: The encoding error handling scheme configured by :func:`open`.
 ENCODING_ERRORS = 'strict'
+
+
+class LicenseError(Exception):
+    """A custom exception for invalid license errors."""
+    pass
 
 
 def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
@@ -60,6 +69,7 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
         leaves an error log in the current working directory or NLPIR's
         ``Data`` directory that provides more detailed messages (but this isn't
         always the case).
+    :raises LicenseError: The NLPIR license appears to be invalid or expired.
 
     """
     if license_code is None:
@@ -94,6 +104,8 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
         license_code = _encode(license_code)
 
     if not nlpir.Init(data_dir, encoding_constant, license_code):
+        if _is_license_error(data_dir) is True:
+            raise LicenseError("Your license appears to have expired.")
         raise RuntimeError("NLPIR function 'NLPIR_Init' failed.")
     else:
         logger.debug("NLPIR API initialized.")
@@ -110,6 +122,33 @@ def close():
         logger.warning("NLPIR function 'NLPIR_Exit' failed.")
     else:
         logger.debug("NLPIR API exited.")
+
+
+def _is_license_error(data_dir):
+    """Check if NLPIR has detected an expired license.
+
+    :param str data_dir: The directory containing NLPIR's `Data` directory.
+    :returns bool: Whether or not there is a license invalid/expired error.
+
+    """
+    if isinstance(data_dir, bytes):
+        data_dir = _decode(data_dir)
+    data_dir = os.path.join(data_dir, 'Data')
+
+    current_date = dt.date.today().strftime('%Y%m%d')
+    timestamp = dt.datetime.today().strftime('[%Y-%m-%d %H:%M:%S]')
+    data_files = os.listdir(data_dir)
+
+    for f in data_files:
+        if f == (current_date + '.err'):
+            file_name = os.path.join(data_dir, f)
+            with fopen(file_name) as error_file:
+                for line in error_file:
+                    if (line.startswith(timestamp) and
+                            'Not valid license' in line):
+                        return True
+
+    return False
 
 
 def _decode(s, encoding=None, errors=None):

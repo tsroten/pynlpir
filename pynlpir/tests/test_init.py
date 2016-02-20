@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
 """Unit tests for pynlpir's __init__.py file."""
 from __future__ import unicode_literals
+import os
+import shutil
+import tempfile
 import unittest
 
 import pynlpir
 from pynlpir.tests.utilities import timeout
+
+DATA_DIR = os.path.join(pynlpir.nlpir.PACKAGE_DIR, 'Data')
+TEST_DIR = os.path.abspath(os.path.dirname(__file__))
+LICENSE_FILE = os.path.join(TEST_DIR, 'data', 'NLPIR.user')
 
 
 class TestNLPIR(unittest.TestCase):
@@ -88,3 +95,18 @@ class TestNLPIR(unittest.TestCase):
         except RuntimeError:
             self.fail('Segment function timed out.')
         self.assertEqual(expected_seg_s, seg_s)
+
+
+class TestNLPIRInit(unittest.TestCase):
+    """Unit tests for pynlpir initialization."""
+
+    def test_license_expire(self):
+        """Tests that a LicenseError is raised if the license is invalid."""
+        temp_dir = tempfile.mkdtemp()
+        temp_data_dir = os.path.join(temp_dir, 'Data')
+        shutil.copytree(DATA_DIR, temp_data_dir)
+        shutil.copy(LICENSE_FILE, temp_data_dir)
+
+        self.assertRaises(pynlpir.LicenseError, pynlpir.open, temp_dir)
+
+        shutil.rmtree(temp_dir)
