@@ -6,11 +6,15 @@ import unittest
 import pynlpir
 from pynlpir.tests.utilities import timeout
 
-pynlpir.open()
-
 
 class TestNLPIR(unittest.TestCase):
     """Unit tests for pynlpir."""
+
+    def setUp(self):
+        pynlpir.open()
+
+    def tearDown(self):
+        pynlpir.close()
 
     def test_segment(self):
         """Tests that the segment() function works as expected."""
