@@ -5,10 +5,7 @@ from io import open
 import os
 import sys
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
 
 import pynlpir
 
@@ -40,6 +37,13 @@ setup(
         'linux64'
         'darwin',
     ],
+    install_requires=[
+        'click',
+    ],
+    entry_points='''
+        [console_scripts]
+        pynlpir=pynlpir.cli:cli
+    ''',
     license='MIT',
     classifiers=[
         'Programming Language :: Python',
