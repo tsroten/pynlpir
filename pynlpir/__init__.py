@@ -146,11 +146,13 @@ def _attempt_to_raise_license_error(data_dir):
                     if not line.startswith(timestamp):
                         continue
                     if 'Not valid license' in line:
-                        raise LicenseError('Your license appears to be expired.'
-                                           ' Try running "pynlpir update".')
+                        raise LicenseError('Your license appears to have '
+                                           'expired. Try running "pynlpir '
+                                           'update".')
                     elif 'Can not open License file' in line:
-                        raise LicenseError('Your license appears to be missing.'
-                                           ' Try running "pynlpir update".')
+                        raise LicenseError('Your license appears to be '
+                                           'missing. Try running "pynlpir '
+                                           'update".')
 
 
 def _decode(s, encoding=None, errors=None):
