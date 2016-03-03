@@ -43,7 +43,7 @@ ENCODING_ERRORS = 'strict'
 
 
 class LicenseError(Exception):
-    """A custom exception for invalid license errors."""
+    """A custom exception for missing/invalid license errors."""
     pass
 
 
@@ -69,7 +69,7 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
         leaves an error log in the current working directory or NLPIR's
         ``Data`` directory that provides more detailed messages (but this isn't
         always the case).
-    :raises LicenseError: The NLPIR license appears to be invalid or expired.
+    :raises LicenseError: The NLPIR license appears to be missing or expired.
 
     """
     if license_code is None:
@@ -104,8 +104,7 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
         license_code = _encode(license_code)
 
     if not nlpir.Init(data_dir, encoding_constant, license_code):
-        if _is_license_error(data_dir) is True:
-            raise LicenseError("Your license appears to have expired.")
+        _attempt_to_raise_license_error(data_dir)
         raise RuntimeError("NLPIR function 'NLPIR_Init' failed.")
     else:
         logger.debug("NLPIR API initialized.")
@@ -124,11 +123,11 @@ def close():
         logger.debug("NLPIR API exited.")
 
 
-def _is_license_error(data_dir):
-    """Check if NLPIR has detected an expired license.
+def _attempt_to_raise_license_error(data_dir):
+    """Raise an error if NLPIR has detected a missing or expired license.
 
     :param str data_dir: The directory containing NLPIR's `Data` directory.
-    :returns bool: Whether or not there is a license invalid/expired error.
+    :raises LicenseError: The NLPIR license appears to be missing or expired.
 
     """
     if isinstance(data_dir, bytes):
@@ -144,11 +143,14 @@ def _is_license_error(data_dir):
             file_name = os.path.join(data_dir, f)
             with fopen(file_name) as error_file:
                 for line in error_file:
-                    if (line.startswith(timestamp) and
-                            'Not valid license' in line):
-                        return True
-
-    return False
+                    if not line.startswith(timestamp):
+                        continue
+                    if 'Not valid license' in line:
+                        raise LicenseError('Your license appears to be expired.'
+                                           ' Try running "pynlpir update".')
+                    elif 'Can not open License file' in line:
+                        raise LicenseError('Your license appears to be missing.'
+                                           ' Try running "pynlpir update".')
 
 
 def _decode(s, encoding=None, errors=None):

@@ -31,7 +31,7 @@ the API.
 
 .. class:: LicenseError
 
-    Raised when the license is invalid or expired.
+    Raised when the license is missing or expired.
 
 .. function:: open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING, encoding_errors=ENCODING_ERRORS, license_code=None)
 
