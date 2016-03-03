@@ -18,6 +18,7 @@ class TestNLPIR(unittest.TestCase):
     """Unit tests for pynlpir."""
 
     def setUp(self):
+        pynlpir.cli.update_license_file(DATA_DIR)
         pynlpir.open()
 
     def tearDown(self):
