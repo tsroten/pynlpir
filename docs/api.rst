@@ -29,6 +29,10 @@ the API.
 
     The encoding error handling scheme configured by :func:`open`.
 
+.. class:: LicenseError
+
+    Raised when the license is missing or expired.
+
 .. function:: open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING, encoding_errors=ENCODING_ERRORS, license_code=None)
 
     Initializes the NLPIR API.
@@ -51,6 +55,7 @@ the API.
         leaves an error log in the current working directory or NLPIR's
         ``Data`` directory that provides more detailed messages (but this isn't
         always the case).
+    :raises LicenseError: The NLPIR license appears to be invalid or expired.
 
 .. function:: close
 
