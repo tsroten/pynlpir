@@ -25,7 +25,7 @@ import sys
 
 from . import nlpir, pos_map
 
-__version__ = '0.4.2'
+__version__ = '0.4.3'
 
 logger = logging.getLogger('pynlpir')
 
