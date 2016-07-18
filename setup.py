@@ -39,6 +39,7 @@ setup(
     ],
     install_requires=[
         'click',
+        'patool'
     ],
     entry_points='''
         [console_scripts]
