@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 """The command-line interface to PyNLPIR."""
 
 import hashlib
@@ -12,12 +13,16 @@ except ImportError:
     from urllib2 import URLError
 
 import click
+from patoolib import extract_archive
+from patoolib.util import PatoolError
 
 import pynlpir
 
 LICENSE_URL = ('https://github.com/NLPIR-team/NLPIR/raw/master/License/license'
                '%20for%20a%20month/NLPIR-ICTCLAS%E5%88%86%E8%AF%8D%E7%B3%BB%E7'
-               '%BB%9F%E6%8E%88%E6%9D%83/NLPIR.user')
+               '%BB%9F%E6%8E%88%E6%9D%83.rar')
+GH_LICENSE_ARCHIVE = 'NLPIR.rar'
+GH_LICENSE_FILENAME = os.path.join('NLPIR-ICTCLAS分词授权', 'NLPIR.user')
 DATA_DIR = os.path.join(pynlpir.nlpir.PACKAGE_DIR, 'Data')
 LICENSE_FILENAME = 'NLPIR.user'
 
@@ -40,13 +45,21 @@ def update_license_file(data_dir):
     """
     license_file = os.path.join(data_dir, LICENSE_FILENAME)
     temp_dir = tempfile.mkdtemp()
-    gh_license_filename = os.path.join(temp_dir, LICENSE_FILENAME)
+    gh_license_archive = os.path.join(temp_dir, GH_LICENSE_ARCHIVE)
+    gh_license_filename = os.path.join(temp_dir, GH_LICENSE_FILENAME)
+
+    click.secho('Downloading the most recent license file...')
     try:
-        _, headers = urlretrieve(LICENSE_URL, gh_license_filename)
+        _, headers = urlretrieve(LICENSE_URL, gh_license_archive)
     except IOError as e:
         # Python 2 uses the unhelpful IOError for this. Re-raise as the more
         # appropriate URLError.
         raise URLError(e.strerror)
+
+    click.secho('')
+    click.secho('Extracting the license file...')
+    extract_archive(gh_license_archive, outdir=temp_dir)
+    click.secho('')
 
     with open(gh_license_filename, 'rb') as f:
         github_license = f.read()
@@ -79,15 +92,19 @@ def update(data_dir):
     except URLError:
         click.secho('Error: unable to fetch newest license.', fg='red')
         exit(1)
+    except PatoolError as e:
+        click.secho('Error: unable to extract new license file.', fg='red')
+        click.secho(str(e), fg='red')
+        exit(1)
     except (IOError, OSError):
         click.secho('Error: unable to move license to data directory.',
                     fg='red')
         exit(1)
 
     if license_updated:
-        click.echo('License updated.')
+        click.secho('License updated.', fg='green')
     else:
-        click.echo('Your license is already up-to-date.')
+        click.secho('Your license is already up-to-date.', fg='green')
 
 if __name__ == '__main__':
     cli()
