@@ -7,4 +7,3 @@ python:
 install: "pip install -r requirements.txt"
 before_script: flake8 pynlpir
 script: make test
-sudo: false
