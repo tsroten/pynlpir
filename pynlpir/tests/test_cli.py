@@ -41,7 +41,7 @@ class TestCLI(unittest.TestCase):
         with self.runner.isolated_filesystem():
             result = self.runner.invoke(cli.cli, ('update', '-d.'))
             self.assertEqual(0, result.exit_code)
-            self.assertEqual('License updated.\n', result.output)
+            self.assertIn('License updated.', result.output)
 
     def test_license_update(self):
         "Test that a regular license update works correctly."""
@@ -50,17 +50,26 @@ class TestCLI(unittest.TestCase):
 
             result = self.runner.invoke(cli.cli, ('update', '-d.'))
             self.assertEqual(0, result.exit_code)
-            self.assertEqual('License updated.\n', result.output)
+            self.assertIn('License updated.', result.output)
 
             result = self.runner.invoke(cli.cli, ('update', '-d.'))
             self.assertEqual(0, result.exit_code)
-            self.assertEqual('Your license is already up-to-date.\n',
-                             result.output)
+            self.assertIn('Your license is already up-to-date.', result.output)
 
     def test_license_write_fail(self):
-        """Test tha writing a license file fails appropriately."""
+        """Test that writing a license file fails appropriately."""
         with self.runner.isolated_filesystem():
             cwd = os.getcwd()
             os.chmod(cwd, stat.S_IREAD)
             with self.assertRaises((IOError, OSError)):
                 cli.update_license_file(cwd)
+
+    def test_no_rar_executable_fail(self):
+        """Tests that updating without a rar executable fails appropriately."""
+        import patoolib
+        patoolib.ArchivePrograms['rar'] = {}
+
+        with self.runner.isolated_filesystem():
+            result = self.runner.invoke(cli.cli, ('update', '-d.'))
+            self.assertEqual(1, result.exit_code)
+            self.assertIn('unable to extract new license file', result.output)
