@@ -11,7 +11,7 @@ except ImportError:
     from urllib2 import URLError
 
 import pynlpir
-from pynlpir.tests.utilities import timeout
+from tests.utilities import timeout
 
 DATA_DIR = os.path.join(pynlpir.nlpir.PACKAGE_DIR, 'Data')
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
