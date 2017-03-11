@@ -1,6 +1,6 @@
 sudo: false
 language: python
-install: pip install .
+install: pip install tox
 script: tox
 
 matrix:
