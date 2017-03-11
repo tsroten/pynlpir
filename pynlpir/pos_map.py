@@ -135,9 +135,9 @@ def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
     pos_code = pos_code.lower()  # Issue #10
     if names not in ('parent', 'child', 'all'):
         raise ValueError("names must be one of 'parent', 'child', or "
-                         "'all'; not '%s'" % names)
-    logger.debug("Getting %s POS name for '%s' formatted as '%s'." %
-                 ('English' if english else 'Chinese', pos_code, names))
+                         "'all'; not '{}'".format(names))
+    logger.debug("Getting {} POS name for '{}' formatted as '{}'.".format(
+                 'English' if english else 'Chinese', pos_code, names))
     for i in range(1, len(pos_code) + 1):
         try:
             pos_key = pos_code[0:i]
@@ -145,22 +145,28 @@ def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
             break
         except KeyError:
             if i == len(pos_code):
-                logger.warning("part of speech not recognized: '%s'"
-                               % pos_code)
+                logger.warning("part of speech not recognized: '{}'".format(
+                               pos_code))
                 return None  # Issue #20
     pos = (pos_entry[1 if english else 0], )
     if names == 'parent':
-        logger.debug("Part of speech name found: '%s'" % pos[0])
+        logger.debug("Part of speech name found: '{}'".format(pos[0]))
         return pos[0]
     if len(pos_entry) == 3 and pos_key != pos_code:
         sub_map = pos_entry[2]
-        logger.debug("Found parent part of speech name '%s'. Descending to "
-                     "look for child name for '%s'" % (pos_entry[1], pos_code))
+        logger.debug("Found parent part of speech name '{}'. Descending to "
+                     "look for child name for '{}'".format(
+                         pos_entry[1], pos_code))
         sub_pos = _get_pos_name(pos_code, names, english, sub_map)
-        pos = pos + sub_pos if names == 'all' else (sub_pos, )
+
+        if names == 'all':
+            # sub_pos can be None sometimes (e.g. for a word '甲')
+            pos = pos + sub_pos if sub_pos else pos
+        else:
+            pos = (sub_pos, )
+
     name = pos if names == 'all' else pos[-1]
-    logger.debug("Part of speech name found: '%s'" % repr(name)
-                 if isinstance(name, tuple) else name)
+    logger.debug("Part of speech name found: '{}'".format(name))
     return name
 
 

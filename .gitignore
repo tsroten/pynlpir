@@ -1,1 +1,3 @@
 *.err
+*.log
+pynlpir/Data/NLPIR.user

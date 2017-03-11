@@ -18,14 +18,18 @@ the API.
 """
 
 from __future__ import unicode_literals
+import datetime as dt
 import logging
+import os
 import sys
 
 from . import nlpir, pos_map
 
-__version__ = '0.4.6'
+__version__ = '0.5'
 
 logger = logging.getLogger('pynlpir')
+
+fopen = open
 
 is_python3 = sys.version_info[0] > 2
 if is_python3:
@@ -36,6 +40,11 @@ ENCODING = 'utf_8'
 
 #: The encoding error handling scheme configured by :func:`open`.
 ENCODING_ERRORS = 'strict'
+
+
+class LicenseError(Exception):
+    """A custom exception for missing/invalid license errors."""
+    pass
 
 
 def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
@@ -60,6 +69,7 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
         leaves an error log in the current working directory or NLPIR's
         ``Data`` directory that provides more detailed messages (but this isn't
         always the case).
+    :raises LicenseError: The NLPIR license appears to be missing or expired.
 
     """
     if license_code is None:
@@ -76,9 +86,9 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
         encoding_constant = nlpir.BIG5_CODE
     else:
         raise ValueError("encoding must be one of 'utf_8', 'big5', or 'gbk'.")
-    logger.debug("Initializing the NLPIR API: {'data_dir': '%s', 'encoding': "
-                 "'%s', 'license_code': '%s'}"
-                 % (data_dir, encoding, license_code))
+    logger.debug("Initializing the NLPIR API: 'data_dir': '{}', 'encoding': "
+                 "'{}', 'license_code': '{}'".format(
+                     data_dir, encoding, license_code))
 
     global ENCODING_ERRORS
     if encoding_errors not in ('strict', 'ignore', 'replace'):
@@ -94,6 +104,7 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
         license_code = _encode(license_code)
 
     if not nlpir.Init(data_dir, encoding_constant, license_code):
+        _attempt_to_raise_license_error(data_dir)
         raise RuntimeError("NLPIR function 'NLPIR_Init' failed.")
     else:
         logger.debug("NLPIR API initialized.")
@@ -110,6 +121,38 @@ def close():
         logger.warning("NLPIR function 'NLPIR_Exit' failed.")
     else:
         logger.debug("NLPIR API exited.")
+
+
+def _attempt_to_raise_license_error(data_dir):
+    """Raise an error if NLPIR has detected a missing or expired license.
+
+    :param str data_dir: The directory containing NLPIR's `Data` directory.
+    :raises LicenseError: The NLPIR license appears to be missing or expired.
+
+    """
+    if isinstance(data_dir, bytes):
+        data_dir = _decode(data_dir)
+    data_dir = os.path.join(data_dir, 'Data')
+
+    current_date = dt.date.today().strftime('%Y%m%d')
+    timestamp = dt.datetime.today().strftime('[%Y-%m-%d %H:%M:%S]')
+    data_files = os.listdir(data_dir)
+
+    for f in data_files:
+        if f == (current_date + '.err'):
+            file_name = os.path.join(data_dir, f)
+            with fopen(file_name) as error_file:
+                for line in error_file:
+                    if not line.startswith(timestamp):
+                        continue
+                    if 'Not valid license' in line:
+                        raise LicenseError('Your license appears to have '
+                                           'expired. Try running "pynlpir '
+                                           'update".')
+                    elif 'Can not open License file' in line:
+                        raise LicenseError('Your license appears to be '
+                                           'missing. Try running "pynlpir '
+                                           'update".')
 
 
 def _decode(s, encoding=None, errors=None):
@@ -188,11 +231,11 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
     """
     s = _decode(s)
     s = s.strip()
-    logger.debug("Segmenting text with%s POS tagging: %s." %
-                 ('' if pos_tagging else 'out', s))
+    logger.debug("Segmenting text with{} POS tagging: {}.".format(
+                 '' if pos_tagging else 'out', s))
     result = nlpir.ParagraphProcess(_encode(s), pos_tagging)
     result = _decode(result)
-    logger.debug("Finished segmenting text: %s." % result)
+    logger.debug("Finished segmenting text: {}.".format(result))
     logger.debug("Formatting segmented text.")
     tokens = result.strip().replace('  ', ' ').split(' ')
     tokens = [' ' if t == '' else t for t in tokens]
@@ -205,7 +248,7 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
                 pos_name = _get_pos_name(token[1], pos_names, pos_english)
                 token = (token[0], pos_name)
             tokens[i] = token
-    logger.debug("Formatted segmented text: %s." % tokens)
+    logger.debug("Formatted segmented text: {}.".format(tokens))
     return tokens
 
 
@@ -228,11 +271,11 @@ def get_key_words(s, max_words=50, weighted=False):
 
     """
     s = _decode(s)
-    logger.debug("Searching for up to %s%s key words in: %s." %
-                 (max_words, ' weighted' if weighted else '', s))
+    logger.debug("Searching for up to {}{} key words in: {}.".format(
+                 max_words, ' weighted' if weighted else '', s))
     result = nlpir.GetKeyWords(_encode(s), max_words, weighted)
     result = _decode(result)
-    logger.debug("Finished key word search: %s." % result)
+    logger.debug("Finished key word search: {}.".format(result))
     logger.debug("Formatting key word search results.")
     fresult = result.strip('#').split('#') if result else []
     if weighted:
@@ -247,5 +290,5 @@ def get_key_words(s, max_words=50, weighted=False):
         if is_python3:
             # Return a list instead of a zip object in Python 3.
             fresult = list(fresult)
-    logger.debug("Key words formatted: %s." % fresult)
+    logger.debug("Key words formatted: {}.".format(fresult))
     return fresult

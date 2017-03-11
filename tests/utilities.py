@@ -21,13 +21,13 @@ def timeout(timeout):
         def wrapper(*args, **kwargs):
             res = [RuntimeError('function {0} timeout'.format(func.__name__))]
 
-            def newFunc():
+            def new_func():
                 try:
                     res[0] = func(*args, **kwargs)
                 except RuntimeError as e:
                     res[0] = e
 
-            t = Thread(target=newFunc)
+            t = Thread(target=new_func)
             t.daemon = True
             try:
                 t.start()

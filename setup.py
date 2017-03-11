@@ -5,10 +5,7 @@ from io import open
 import os
 import sys
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
 
 import pynlpir
 
@@ -16,10 +13,12 @@ if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
     sys.exit()
 
+
 def open_file(filename):
     """Open and read the file *filename*."""
     with open(filename, encoding='utf-8') as f:
         return f.read()
+
 
 readme = open_file('README.rst')
 history = open_file('CHANGES.rst').replace('.. :changelog:', '')
@@ -40,6 +39,13 @@ setup(
         'linux64'
         'darwin',
     ],
+    install_requires=[
+        'click'
+    ],
+    entry_points='''
+        [console_scripts]
+        pynlpir=pynlpir.cli:cli
+    ''',
     license='MIT',
     classifiers=[
         'Programming Language :: Python',
@@ -53,13 +59,13 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Education',
         'Topic :: Text Processing :: Linguistic',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        ],
+    ],
     keywords=['pynlpir', 'nlpir', 'ictclas', 'chinese', 'segmentation', 'nlp'],
     packages=[
         'pynlpir'
@@ -67,5 +73,5 @@ setup(
     package_data={
         'pynlpir': ['Data/*.*', 'Data/English/*', 'lib/*']
     },
-    test_suite='pynlpir.tests'
+    test_suite='tests'
 )

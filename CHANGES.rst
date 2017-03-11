@@ -3,6 +3,13 @@
 Change Log
 ----------
 
+0.5 (2017-03-11)
+++++++++++++++++
+
+* Adds license auto-updater.
+* Removes included license file.
+* Moves tests to separate directory.
+
 0.4.6 (2016-08-12)
 ++++++++++++++++++
 

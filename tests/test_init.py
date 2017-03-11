@@ -1,16 +1,37 @@
 # -*- coding: utf-8 -*-
 """Unit tests for pynlpir's __init__.py file."""
 from __future__ import unicode_literals
+import os
+import shutil
+import tempfile
 import unittest
+try:
+    from urllib.error import URLError
+except ImportError:
+    from urllib2 import URLError
 
 import pynlpir
-from pynlpir.tests.utilities import timeout
+from tests.utilities import timeout
 
-pynlpir.open()
+DATA_DIR = os.path.join(pynlpir.nlpir.PACKAGE_DIR, 'Data')
+TEST_DIR = os.path.abspath(os.path.dirname(__file__))
+LICENSE_NAME = 'NLPIR.user'
+LICENSE_FILE = os.path.join(TEST_DIR, 'data', LICENSE_NAME)
 
 
 class TestNLPIR(unittest.TestCase):
     """Unit tests for pynlpir."""
+
+    def setUp(self):
+        try:
+            pynlpir.cli.update_license_file(DATA_DIR)
+        except URLError:
+            pass
+
+        pynlpir.open()
+
+    def tearDown(self):
+        pynlpir.close()
 
     def test_segment(self):
         """Tests that the segment() function works as expected."""
@@ -84,3 +105,62 @@ class TestNLPIR(unittest.TestCase):
         except RuntimeError:
             self.fail('Segment function timed out.')
         self.assertEqual(expected_seg_s, seg_s)
+
+    def test_issue_52(self):
+        """
+        Tests for issue #52 -- segment(pos_names='all') fails for certain texts
+        input.
+        """
+        # it seems '甲' returns 'Mg', which is not listed in the POS_MAP.
+        # thus in this case 'None' needs to be returned for '甲'.
+        s = u'其中，新增了甲卡西酮、曲马多、安钠咖等12种新类型毒品的定罪量刑数量标准，' \
+            u'并下调了在我国危害较为严重的毒品氯胺酮的定罪量刑数量标准。'
+
+        segments = pynlpir.segment(s=s, pos_tagging=True, pos_names='all')
+
+        expected_segments = [
+            (u'其中', 'pronoun:demonstrative pronoun'),
+            (u'，', 'punctuation mark:comma'), (u'新增', 'verb'),
+            (u'了', 'particle:particle 了/喽'), (u'甲', 'numeral'),
+            (u'卡', 'noun'), (u'西', 'distinguishing word'), (u'酮', 'noun'),
+            (u'、', 'punctuation mark:enumeration comma'),
+            (u'曲马多', 'noun:personal name:transcribed personal name'),
+            (u'、', 'punctuation mark:enumeration comma'),
+            (u'安', 'noun:personal name:Chinese surname'), (u'钠', 'noun'),
+            (u'咖', 'noun'), (u'等', 'particle:particle 等/等等/云云'),
+            (u'12', 'numeral'), (u'种', 'classifier'), (u'新', 'adjective'),
+            (u'类型', 'noun'), (u'毒品', 'noun'),
+            (u'的', 'particle:particle 的/底'), (u'定罪', 'verb:noun-verb'),
+            (u'量刑', 'verb:noun-verb'), (u'数量', 'noun'), (u'标准', 'noun'),
+            (u'，', 'punctuation mark:comma'),
+            (u'并', 'conjunction:coordinating conjunction'), (u'下调', 'verb'),
+            (u'了', 'particle:particle 了/喽'), (u'在', 'preposition'),
+            (u'我国', 'noun'), (u'危害', 'verb:noun-verb'), (u'较为', 'adverb'),
+            (u'严重', 'adjective'), (u'的', 'particle:particle 的/底'),
+            (u'毒品', 'noun'), (u'氯', 'noun'), (u'胺', 'noun'), (u'酮', 'noun'),
+            (u'的', 'particle:particle 的/底'), (u'定罪', 'verb:noun-verb'),
+            (u'量刑', 'verb:noun-verb'), (u'数量', 'noun'), (u'标准', 'noun'),
+            (u'。', 'punctuation mark:period'),
+        ]
+
+        self.assertEqual(segments, expected_segments)
+
+
+class TestNLPIRInit(unittest.TestCase):
+    """Unit tests for pynlpir initialization."""
+
+    def test_license_expire(self):
+        """Tests that a LicenseError is raised if the license is invalid."""
+        temp_dir = tempfile.mkdtemp()
+        temp_data_dir = os.path.join(temp_dir, 'Data')
+        shutil.copytree(DATA_DIR, temp_data_dir)
+        shutil.copy(LICENSE_FILE, temp_data_dir)
+
+        self.assertRaises(pynlpir.LicenseError, pynlpir.open, temp_dir)
+
+        temp_license_file = os.path.join(temp_data_dir, LICENSE_NAME)
+        os.remove(temp_license_file)
+
+        self.assertRaises(pynlpir.LicenseError, pynlpir.open, temp_dir)
+
+        shutil.rmtree(temp_dir)

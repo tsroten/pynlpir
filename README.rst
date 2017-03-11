@@ -39,14 +39,19 @@ Features
 * English/Chinese part of speech mapping
 * Support for UTF-8, GBK, and BIG5 encoded strings (and unicode of course!)
 * Access to NLPIR's C functions via ``ctypes``
-* No third-party dependencies (PyNLPIR includes a copy of NLPIR)
+* Includes a copy of NLPIR
 * Runs on Python 2.7 and 3
-* Supports OS X, Linux, and Windows
+* Supports macOS, Linux, and Windows
 
 Getting Started
 ---------------
 
 * `Install PyNLPIR <http://pynlpir.readthedocs.org/en/latest/installation.html>`_
+
+  * ``pip install pynlpir`` to install PyNLPIR.
+
+  * ``pynlpir update`` to download the latest license.
+
 * Read `PyNLPIR's tutorial <http://pynlpir.readthedocs.org/en/latest/tutorial.html>`_
 * Learn from the `API documentation <http://pynlpir.readthedocs.org/en/latest/api.html>`_
 * `Contribute <http://pynlpir.readthedocs.org/en/latest/contributing.html>`_ documentation, code, or feedback
