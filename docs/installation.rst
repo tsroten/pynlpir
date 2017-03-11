@@ -11,10 +11,11 @@ Install PyNLPIR using `pip <http://www.pip-installer.org/>`_:
 .. code-block:: bash
 
     $ pip install pynlpir
+    $ pynlpir update
 
 This will download PyNLPIR from
 `the Python Package Index <http://pypi.python.org/>`_ and install it in your
-Python's ``site-packages`` directory.
+Python's ``site-packages`` directory. ``pynlpir update`` will download the latest license from the NLPIR project.
 
 Install from Source
 -------------------
@@ -24,6 +25,7 @@ If you'd rather install PyNLPIR manually:
 1.  Download the most recent release from `PyNLPIR's PyPi page <http://pypi.python.org/pypi/pynlpir>`_.
 2. Unpack the archive file.
 3. From inside the directory ``PyNLPIR-XX``, run ``python setup.py install``
+4. Run ``pynlpir update`` to download the latest license file.
 
 This will install PyNLPIR in your Python's ``site-packages`` directory.
 
@@ -38,9 +40,10 @@ is installed. Then run:
 
     $ git clone git://github.com/tsroten/pynlpir.git
     $ pip install -e pynlpir
+    $ pynlpir update
 
 This will link the ``PyNLPIR`` directory into your ``site-packages``
-directory.
+directory. ``pynlpir update`` will download the latest license from the NLPIR project.
 
 Running the Tests
 -----------------
