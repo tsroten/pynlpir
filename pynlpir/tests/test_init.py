@@ -5,6 +5,10 @@ import os
 import shutil
 import tempfile
 import unittest
+try:
+    from urllib.error import URLError
+except ImportError:
+    from urllib2 import URLError
 
 import pynlpir
 from pynlpir.tests.utilities import timeout
@@ -19,7 +23,11 @@ class TestNLPIR(unittest.TestCase):
     """Unit tests for pynlpir."""
 
     def setUp(self):
-        pynlpir.cli.update_license_file(DATA_DIR)
+        try:
+            pynlpir.cli.update_license_file(DATA_DIR)
+        except URLError:
+            pass
+
         pynlpir.open()
 
     def tearDown(self):
