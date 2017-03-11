@@ -47,8 +47,8 @@ Getting Started
 ---------------
 
 * `Install PyNLPIR <http://pynlpir.readthedocs.org/en/latest/installation.html>`_
-  - `pip install pynlpir`
-  - `pynlpir update`
+  * `pip install pynlpir`
+  * `pynlpir update`
 * Read `PyNLPIR's tutorial <http://pynlpir.readthedocs.org/en/latest/tutorial.html>`_
 * Learn from the `API documentation <http://pynlpir.readthedocs.org/en/latest/api.html>`_
 * `Contribute <http://pynlpir.readthedocs.org/en/latest/contributing.html>`_ documentation, code, or feedback
