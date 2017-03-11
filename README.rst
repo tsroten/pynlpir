@@ -39,7 +39,7 @@ Features
 * English/Chinese part of speech mapping
 * Support for UTF-8, GBK, and BIG5 encoded strings (and unicode of course!)
 * Access to NLPIR's C functions via ``ctypes``
-* No third-party dependencies (PyNLPIR includes a copy of NLPIR)
+* Includes a copy of NLPIR
 * Runs on Python 2.7 and 3
 * Supports macOS, Linux, and Windows
 
