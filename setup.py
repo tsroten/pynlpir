@@ -13,10 +13,12 @@ if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
     sys.exit()
 
+
 def open_file(filename):
     """Open and read the file *filename*."""
     with open(filename, encoding='utf-8') as f:
         return f.read()
+
 
 readme = open_file('README.rst')
 history = open_file('CHANGES.rst').replace('.. :changelog:', '')
