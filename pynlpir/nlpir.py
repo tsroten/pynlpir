@@ -107,9 +107,9 @@ def load_library(platform, is_64bit, lib_dir=LIB_DIR):
     else:
         raise RuntimeError("Platform '%s' is not supported by NLPIR." %
                            platform)
-    libNLPIR = cdll.LoadLibrary(lib)
+    lib_nlpir = cdll.LoadLibrary(lib)
     logger.debug("NLPIR library file '%s' loaded." % lib)
-    return libNLPIR
+    return lib_nlpir
 
 
 is_64bit = sys.maxsize > 2**32
