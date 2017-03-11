@@ -1,7 +1,7 @@
 Installation
 ============
 
-Installing PyNLPIR is simple. PyNLPIR is designed to run on Python 2.7 or 3. Because of the included NLPIR library files, it only runs on Windows or GNU/Linux.
+Installing PyNLPIR is simple. PyNLPIR is designed to run on Python 2.7 or 3. Because of the included NLPIR library files, it only runs on Windows, GNU/Linux, or macOS.
 
 Pip
 ---
@@ -35,7 +35,7 @@ To install the development version first make sure `Git <http://git-scm.org/>`_
 is installed. Then run:
 
 .. code-block:: bash
-   
+
     $ git clone git://github.com/tsroten/pynlpir.git
     $ pip install -e pynlpir
 
