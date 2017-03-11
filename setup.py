@@ -66,7 +66,7 @@ setup(
         'Topic :: Education',
         'Topic :: Text Processing :: Linguistic',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        ],
+    ],
     keywords=['pynlpir', 'nlpir', 'ictclas', 'chinese', 'segmentation', 'nlp'],
     packages=[
         'pynlpir'

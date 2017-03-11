@@ -86,9 +86,9 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
         encoding_constant = nlpir.BIG5_CODE
     else:
         raise ValueError("encoding must be one of 'utf_8', 'big5', or 'gbk'.")
-    logger.debug("Initializing the NLPIR API: {'data_dir': '%s', 'encoding': "
-                 "'%s', 'license_code': '%s'}"
-                 % (data_dir, encoding, license_code))
+    logger.debug("Initializing the NLPIR API: 'data_dir': '{}', 'encoding': "
+                 "'{}', 'license_code': '{}'".format(
+                     data_dir, encoding, license_code))
 
     global ENCODING_ERRORS
     if encoding_errors not in ('strict', 'ignore', 'replace'):
@@ -231,11 +231,11 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
     """
     s = _decode(s)
     s = s.strip()
-    logger.debug("Segmenting text with%s POS tagging: %s." %
-                 ('' if pos_tagging else 'out', s))
+    logger.debug("Segmenting text with{} POS tagging: {}.".format(
+                 '' if pos_tagging else 'out', s))
     result = nlpir.ParagraphProcess(_encode(s), pos_tagging)
     result = _decode(result)
-    logger.debug("Finished segmenting text: %s." % result)
+    logger.debug("Finished segmenting text: {}.".format(result))
     logger.debug("Formatting segmented text.")
     tokens = result.strip().replace('  ', ' ').split(' ')
     tokens = [' ' if t == '' else t for t in tokens]
@@ -248,7 +248,7 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
                 pos_name = _get_pos_name(token[1], pos_names, pos_english)
                 token = (token[0], pos_name)
             tokens[i] = token
-    logger.debug("Formatted segmented text: %s." % tokens)
+    logger.debug("Formatted segmented text: {}.".format(tokens))
     return tokens
 
 
@@ -271,11 +271,11 @@ def get_key_words(s, max_words=50, weighted=False):
 
     """
     s = _decode(s)
-    logger.debug("Searching for up to %s%s key words in: %s." %
-                 (max_words, ' weighted' if weighted else '', s))
+    logger.debug("Searching for up to {}{} key words in: {}.".format(
+                 max_words, ' weighted' if weighted else '', s))
     result = nlpir.GetKeyWords(_encode(s), max_words, weighted)
     result = _decode(result)
-    logger.debug("Finished key word search: %s." % result)
+    logger.debug("Finished key word search: {}.".format(result))
     logger.debug("Formatting key word search results.")
     fresult = result.strip('#').split('#') if result else []
     if weighted:
@@ -290,5 +290,5 @@ def get_key_words(s, max_words=50, weighted=False):
         if is_python3:
             # Return a list instead of a zip object in Python 3.
             fresult = list(fresult)
-    logger.debug("Key words formatted: %s." % fresult)
+    logger.debug("Key words formatted: {}.".format(fresult))
     return fresult

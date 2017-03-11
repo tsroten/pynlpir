@@ -88,7 +88,7 @@ def load_library(platform, is_64bit, lib_dir=LIB_DIR):
     :raises RuntimeError: The user's platform is not supported by NLPIR.
 
     """
-    logger.debug("Loading NLPIR library file from '%s'" % lib_dir)
+    logger.debug("Loading NLPIR library file from '{}'".format(lib_dir))
     if platform.startswith('win') and is_64bit:
         lib = os.path.join(lib_dir, 'NLPIR64')
         logger.debug("Using library file for 64-bit Windows.")
@@ -105,10 +105,10 @@ def load_library(platform, is_64bit, lib_dir=LIB_DIR):
         lib = os.path.join(lib_dir, 'libNLPIRios.so')
         logger.debug("Using library file for OSX/iOS.")
     else:
-        raise RuntimeError("Platform '%s' is not supported by NLPIR." %
-                           platform)
+        raise RuntimeError("Platform '{}' is not supported by NLPIR.".format(
+                           platform))
     lib_nlpir = cdll.LoadLibrary(lib)
-    logger.debug("NLPIR library file '%s' loaded." % lib)
+    logger.debug("NLPIR library file '{}' loaded.".format(lib))
     return lib_nlpir
 
 
@@ -133,14 +133,14 @@ def get_func(name, argtypes=None, restype=c_int, lib=libNLPIR):
         callable.
 
     """
-    logger.debug("Getting NLPIR API function: {'name': '%s', 'argtypes': '%s',"
-                 " 'restype': '%s'}." % (name, argtypes, restype))
+    logger.debug("Getting NLPIR API function: 'name': '{}', 'argtypes': '{}',"
+                 " 'restype': '{}'.".format(name, argtypes, restype))
     func = getattr(lib, name)
     if argtypes is not None:
         func.argtypes = argtypes
     if restype is not c_int:
         func.restype = restype
-    logger.debug("NLPIR API function '%s' retrieved." % name)
+    logger.debug("NLPIR API function '{}' retrieved.".format(name))
     return func
 
 
