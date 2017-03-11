@@ -89,5 +89,6 @@ def update(data_dir):
     else:
         click.echo('Your license is already up-to-date.')
 
+
 if __name__ == '__main__':
     cli()

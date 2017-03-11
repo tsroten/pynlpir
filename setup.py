@@ -38,8 +38,7 @@ setup(
         'darwin',
     ],
     install_requires=[
-        'click',
-        'patool'
+        'click'
     ],
     entry_points='''
         [console_scripts]

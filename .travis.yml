@@ -4,10 +4,7 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
-before_install:
-  - sudo apt-get install p7zip-rar
 install:
   - pip install -r requirements.txt
-  - pip install patool
 before_script: flake8 pynlpir
 script: make test
