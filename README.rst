@@ -2,11 +2,7 @@
 PyNLPIR
 =======
 
-.. image:: https://badge.fury.io/py/pynlpir.png
-    :target: http://badge.fury.io/py/pynlpir
-
-.. image:: https://travis-ci.org/tsroten/pynlpir.png?branch=develop
-        :target: https://travis-ci.org/tsroten/pynlpir
+|Build Status|  |PyPI|
 
 PyNLPIR is a Python wrapper around the
 `NLPIR/ICTCLAS Chinese segmentation software <http://ictclas.nlpir.org>`_.
@@ -48,10 +44,16 @@ Getting Started
 
 * `Install PyNLPIR <http://pynlpir.readthedocs.org/en/latest/installation.html>`_
 
-  * ``pip install pynlpir`` to install PyNLPIR.
-
-  * ``pynlpir update`` to download the latest license.
+  * ``pip install pynlpir`` to install PyNLPIR
+  * ``pynlpir update`` to download the latest license
 
 * Read `PyNLPIR's tutorial <http://pynlpir.readthedocs.org/en/latest/tutorial.html>`_
 * Learn from the `API documentation <http://pynlpir.readthedocs.org/en/latest/api.html>`_
 * `Contribute <http://pynlpir.readthedocs.org/en/latest/contributing.html>`_ documentation, code, or feedback
+
+.. |Build Status| image:: https://travis-ci.org/tsroten/pynlpir.png?branch=master
+        :target: https://travis-ci.org/tsroten/pynlpir
+
+.. |PyPI| image:: https://img.shields.io/pypi/v/pynlpir.svg
+    :target: https://pypi.python.org/pypi/pynlpir/
+    :alt: Latest Version
