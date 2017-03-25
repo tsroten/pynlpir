@@ -3,6 +3,11 @@
 Change Log
 ----------
 
+0.5.2 (2017-03-24)
+++++++++++++++++++
+
+* Fixes error opening PyNLPIR on Windows/Python 3. Fixes #63.
+
 0.5.1 (2017-03-18)
 ++++++++++++++++++
 
