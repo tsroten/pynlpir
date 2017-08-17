@@ -284,7 +284,7 @@ def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
     return name
 
 
-def get_pos_name(code, name='parent', english=True):
+def get_pos_name(code, name='parent', english=True, pos_tags=POS_MAP):
     """Gets the part of speech name for *code*.
 
     :param str code: The part of speech code to lookup, e.g. ``'nsf'``.
@@ -297,8 +297,9 @@ def get_pos_name(code, name='parent', english=True):
         names should be used, e.g. ``('noun', 'toponym',
         'transcribed toponym')`` for ``'nsf'``.
     :param bool english: Whether to return an English or Chinese name.
+    :param dict pos_tags: Custom part of speech tags to use.
     :returns: ``str`` (``unicode`` for Python 2) if *name* is ``'parent'`` or
         ``'child'``. ``tuple`` if *name* is ``'all'``.
 
     """
-    return _get_pos_name(code, name, english)
+    return _get_pos_name(code, name, english, pos_tags)
