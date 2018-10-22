@@ -133,9 +133,9 @@ POS_MAP = {
 def _get_pos_name(pos_code, names='parent', english=True, pos_map=POS_MAP):
     """Gets the part of speech name for *pos_code*."""
     pos_code = pos_code.lower()  # Issue #10
-    if names not in ('parent', 'child', 'all'):
-        raise ValueError("names must be one of 'parent', 'child', or "
-                         "'all'; not '{}'".format(names))
+    #if names not in ('parent', 'child', 'all'):
+        #raise ValueError("names must be one of 'parent', 'child', or "
+                         #"'all'; not '{}'".format(names))
     logger.debug("Getting {} POS name for '{}' formatted as '{}'.".format(
                  'English' if english else 'Chinese', pos_code, names))
     for i in range(1, len(pos_code) + 1):
