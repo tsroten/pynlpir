@@ -121,7 +121,7 @@ class TestNLPIR(unittest.TestCase):
         expected_segments = [
             (u'其中', 'pronoun:demonstrative pronoun'),
             (u'，', 'punctuation mark:comma'), (u'新增', 'verb'),
-            (u'了', 'particle:particle 了/喽'), (u'甲', 'numeral'),
+            (u'了', 'particle:particle 了/喽'), (u'甲', 'numeral:zodiac'),
             (u'卡', 'noun'), (u'西', 'distinguishing word'), (u'酮', 'noun'),
             (u'、', 'punctuation mark:enumeration comma'),
             (u'曲马多', 'noun:personal name:transcribed personal name'),

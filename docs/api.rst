@@ -86,16 +86,17 @@ the API.
         argument is only used if *pos_tagging* is ``True``. :data:`None`
         means only the original NLPIR part of speech code will be returned.
         Other than :data:`None`, *pos_names* may be one of ``'parent'``,
-        ``'child'``, or ``'all'``. Defaults to ``'parent'``. ``'parent'``
+        ``'child'``, ``'all'``, or ``'raw'``. Defaults to ``'parent'``. ``'parent'``
         indicates that only the most generic name should be used, e.g.
         ``'noun'`` for ``'nsf'``. ``'child'`` indicates that the most specific
         name should be used, e.g. ``'transcribed toponym'`` for ``'nsf'``.
         ``'all'`` indicates that all names should be used, e.g.
         ``'noun:toponym:transcribed toponym'`` for ``'nsf'``.
+        ``'raw'`` indicates that original names should be used.
     :type pos_names: ``str`` or :data:`None`
     :param bool pos_english: Whether to use English or Chinese for the part
         of speech names, e.g. ``'conjunction'`` or ``'连词'``. Defaults to
-        ``True``. This is only used if *pos_names* is ``True``.
+        ``True``. This is only used if *pos_tagging* is ``True``.
 
 .. function:: get_key_words(s, max_words=50, weighted=False)
 
@@ -463,13 +464,13 @@ This module is used by :mod:`pynlpir` to format segmented words for output.
 
     :param str code: The part of speech code to lookup, e.g. ``'nsf'``.
     :param str name: Which part of speech name to include in the output. Must
-        be one of ``'parent'``, ``'child'``, or ``'all'``. Defaults to
+        be one of ``'parent'``, ``'child'``, ``'all'``, or ``'raw'``. Defaults to
         ``'parent'``. ``'parent'`` indicates that only the most generic name
         should be used, e.g. ``'noun'`` for ``'nsf'``. ``'child'`` indicates
         that the most specific name should be used, e.g.
         ``'transcribed toponym'`` for ``'nsf'``. ``'all'`` indicates that all
         names should be used, e.g. ``('noun', 'toponym',
-        'transcribed toponym')`` for ``'nsf'``.
+        'transcribed toponym')`` for ``'nsf'``. ``'raw'`` indicates the original names.
     :param bool english: Whether to return an English or Chinese name.
     :returns: ``str`` (``unicode`` for Python 2) if *name* is ``'parent'`` or
         ``'child'``. ``tuple`` if *name* is ``'all'``. :data:`None` if the part
