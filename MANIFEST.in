@@ -1,6 +1,6 @@
 include Makefile
 include tox.ini
-include *.txt *.rst
+include *.txt *.rst *.yml
 recursive-include docs *
 prune docs/_build
 recursive-include tests *.py
