@@ -47,7 +47,7 @@ class LicenseError(Exception):
     pass
 
 
-def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
+def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,  # noqa: A001
          encoding_errors=ENCODING_ERRORS, license_code=None):
     """Initializes the NLPIR API.
 

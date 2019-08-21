@@ -5,7 +5,7 @@ PyNLPIR
 |Build Status|  |PyPI|
 
 PyNLPIR is a Python wrapper around the
-`NLPIR/ICTCLAS Chinese segmentation software <http://ictclas.nlpir.org>`_.
+`NLPIR/ICTCLAS Chinese segmentation software <http://www.nlpir.org/wordpress/>`_.
 
 * Documentation: http://pynlpir.rtfd.org
 * GitHub: https://github.com/tsroten/pynlpir
