@@ -116,7 +116,7 @@ def load_library(platform, is_64bit, lib_dir=LIB_DIR):
 is_64bit = sys.maxsize > 2**32
 
 #: A :class:`ctypes.CDLL` instance for the NLPIR API library.
-libNLPIR = load_library(sys.platform, is_64bit)
+libNLPIR = load_library(sys.platform, is_64bit)  # noqa: N816
 
 
 def get_func(name, argtypes=None, restype=c_int, lib=libNLPIR):

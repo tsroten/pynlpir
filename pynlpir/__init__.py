@@ -47,7 +47,7 @@ class LicenseError(Exception):
     pass
 
 
-def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,
+def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,  # noqa: A001
          encoding_errors=ENCODING_ERRORS, license_code=None):
     """Initializes the NLPIR API.
 
@@ -182,7 +182,8 @@ def _to_float(s):
         return False
 
 
-def _get_pos_name(code, name='parent', english=True, delimiter=':'):
+def _get_pos_name(code, name='parent', english=True, delimiter=':',
+                  pos_tags=pos_map.POS_MAP):
     """Gets the part of speech name for *code*.
 
     Joins the names together with *delimiter* if *name* is ``'all'``.
@@ -190,11 +191,12 @@ def _get_pos_name(code, name='parent', english=True, delimiter=':'):
     See :func:``pynlpir.pos_map.get_pos_name`` for more information.
 
     """
-    pos_name = pos_map.get_pos_name(code, name, english)
+    pos_name = pos_map.get_pos_name(code, name, english, pos_tags=pos_tags)
     return delimiter.join(pos_name) if name == 'all' else pos_name
 
 
-def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
+def segment(s, pos_tagging=True, pos_names='parent', pos_english=True,
+            pos_tags=pos_map.POS_MAP):
     """Segment Chinese text *s* using NLPIR.
 
     The segmented tokens are returned as a list. Each item of the list is a
@@ -227,6 +229,7 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
     :param bool pos_english: Whether to use English or Chinese for the part
         of speech names, e.g. ``'conjunction'`` or ``'连词'``. Defaults to
         ``True``. This is only used if *pos_names* is ``True``.
+    :param dict pos_tags: Custom part of speech tags to use.
 
     """
     s = _decode(s)
@@ -245,7 +248,8 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True):
             if len(token) == 1:
                 token = (token[0], None)
             if pos_names is not None and token[1] is not None:
-                pos_name = _get_pos_name(token[1], pos_names, pos_english)
+                pos_name = _get_pos_name(token[1], pos_names, pos_english,
+                                         pos_tags=pos_tags)
                 token = (token[0], pos_name)
             tokens[i] = token
     logger.debug("Formatted segmented text: {}.".format(tokens))

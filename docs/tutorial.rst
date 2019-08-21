@@ -138,7 +138,7 @@ Initializing and Exiting the API
 
 Before you can call any other NLPIR functions, you need to initialize the NLPIR API.
 This is done by calling :func:`~pynlpir.nlpir.Init`. You have to specify where
-NLPIR's ``Data`` directory is. PyNLPIR ships with a copy and it's found in the 
+NLPIR's ``Data`` directory is. PyNLPIR ships with a copy and it's found in the
 top-level of the package directory. So, you can use the module-level constant
 :data:`~pynlpir.nlpir.PACKAGE_DIR` when calling :func:`~pynlpir.nlpir.Init`:
 
@@ -168,7 +168,7 @@ The Rest of the NLPIR Functions
 
 For a complete list of NLPIR functions that :mod:`pynlpir.nlpir` includes,
 check out the :doc:`api`. NLPIR's documentation is included in a PDF file in
-the `NLPIR/ICTCLAS 2016 download <http://ictclas.nlpir.org/downloads>`_.
+the `NLPIR/ICTCLAS repository <https://github.com/NLPIR-team/NLPIR/tree/master/NLPIR%20SDK/NLPIR-ICTCLAS/doc>`_.
 Consult it for detailed information on how to use NLPIR.
 
 What's Next
