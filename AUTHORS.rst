@@ -10,4 +10,4 @@ Author and Maintainer
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Koichi Yasuoka <https://github.com/KoichiYasuoka>

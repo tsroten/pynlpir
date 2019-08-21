@@ -3,6 +3,13 @@
 Change Log
 ----------
 
+0.6 (2019-08-20)
+++++++++++++++++
+
+* Adds ``'raw'`` option to pos_names for pynlpir.segment().
+* Adds missing pos tags: "mg", "g", and "j".
+* Fixes broken NLPIR project links in documentation.
+
 0.5.2 (2017-03-24)
 ++++++++++++++++++
 

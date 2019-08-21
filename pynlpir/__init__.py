@@ -25,7 +25,7 @@ import sys
 
 from . import nlpir, pos_map
 
-__version__ = '0.5.2'
+__version__ = '0.6.0'
 
 logger = logging.getLogger('pynlpir')
 
@@ -219,16 +219,17 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True,
         argument is only used if *pos_tagging* is ``True``. :data:`None`
         means only the original NLPIR part of speech code will be returned.
         Other than :data:`None`, *pos_names* may be one of ``'parent'``,
-        ``'child'``, or ``'all'``. Defaults to ``'parent'``. ``'parent'``
-        indicates that only the most generic name should be used, e.g.
-        ``'noun'`` for ``'nsf'``. ``'child'`` indicates that the most specific
-        name should be used, e.g. ``'transcribed toponym'`` for ``'nsf'``.
-        ``'all'`` indicates that all names should be used, e.g.
+        ``'child'``, ``'all'``, or ``'raw'``. Defaults to ``'parent'``.
+        ``'parent'`` indicates that only the most generic name should be used,
+        e.g. ``'noun'`` for ``'nsf'``. ``'child'`` indicates that the most
+        specific name should be used, e.g. ``'transcribed toponym'`` for
+        ``'nsf'``. ``'all'`` indicates that all names should be used, e.g.
         ``'noun:toponym:transcribed toponym'`` for ``'nsf'``.
+        ``'raw'`` indicates that original names should be used.
     :type pos_names: ``str`` or :data:`None`
     :param bool pos_english: Whether to use English or Chinese for the part
         of speech names, e.g. ``'conjunction'`` or ``'连词'``. Defaults to
-        ``True``. This is only used if *pos_names* is ``True``.
+        ``True``. This is only used if *pos_tagging* is ``True``.
     :param dict pos_tags: Custom part of speech tags to use.
 
     """

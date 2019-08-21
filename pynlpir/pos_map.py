@@ -180,13 +180,14 @@ def get_pos_name(code, name='parent', english=True, pos_tags=POS_MAP):
 
     :param str code: The part of speech code to lookup, e.g. ``'nsf'``.
     :param str name: Which part of speech name to include in the output. Must
-        be one of ``'parent'``, ``'child'``, or ``'all'``. Defaults to
-        ``'parent'``. ``'parent'`` indicates that only the most generic name
-        should be used, e.g. ``'noun'`` for ``'nsf'``. ``'child'`` indicates
-        that the most specific name should be used, e.g.
+        be one of ``'parent'``, ``'child'``, ``'all'``, or ``'raw'``.
+        Defaults to ``'parent'``. ``'parent'`` indicates that only the most
+        generic name should be used, e.g. ``'noun'`` for ``'nsf'``.
+        ``'child'`` indicates that the most specific name should be used, e.g.
         ``'transcribed toponym'`` for ``'nsf'``. ``'all'`` indicates that all
         names should be used, e.g. ``('noun', 'toponym',
-        'transcribed toponym')`` for ``'nsf'``.
+        'transcribed toponym')`` for ``'nsf'``. ``'raw'`` indicates that the
+        part of speech code is not transformed at all.
     :param bool english: Whether to return an English or Chinese name.
     :param dict pos_tags: Custom part of speech tags to use.
     :returns: ``str`` (``unicode`` for Python 2) if *name* is ``'parent'`` or
