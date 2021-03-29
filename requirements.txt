@@ -1,5 +1,5 @@
 Jinja2>=2.9.0
-Pygments==1.6
+Pygments==2.7.4
 Sphinx>=1.8.5
 coverage==3.7.1
 docutils==0.11
