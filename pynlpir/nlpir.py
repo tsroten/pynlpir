@@ -22,7 +22,6 @@ import logging
 import os
 import sys
 
-is_python3 = sys.version_info[0] > 2
 logger = logging.getLogger('pynlpir.nlpir')
 
 #: The absolute path to this package (used by NLPIR to find its ``Data``
@@ -108,7 +107,7 @@ def load_library(platform, is_64bit, lib_dir=LIB_DIR):
     else:
         raise RuntimeError("Platform '{}' is not supported by NLPIR.".format(
                            platform))
-    lib_nlpir = cdll.LoadLibrary(lib if is_python3 else lib.encode('utf-8'))
+    lib_nlpir = cdll.LoadLibrary(lib)
     logger.debug("NLPIR library file '{}' loaded.".format(lib))
     return lib_nlpir
 
