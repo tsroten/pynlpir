@@ -32,7 +32,7 @@ def timeout(timeout):
             try:
                 t.start()
                 t.join(timeout)
-            except Exception as je:
+            except Exception as je:  # noqa: B902
                 print('Error starting thread')
                 raise je
             ret = res[0]
