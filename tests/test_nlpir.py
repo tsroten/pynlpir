@@ -5,6 +5,7 @@ import ctypes
 import unittest
 
 import pynlpir
+
 nlpir = pynlpir.nlpir
 
 
