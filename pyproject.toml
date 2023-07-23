@@ -1,0 +1,118 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "PyNLPIR"
+dynamic = ["version"]
+description = "A Python wrapper around the NLPIR/ICTCLAS Chinese segmentation software."
+readme = "README.rst"
+license = "MIT"
+authors = [
+    { name = "Thomas Roten", email = "thomas@roten.us" },
+]
+requires-python = ">=3.7"
+keywords = [
+    "pynlpir",
+    "nlpir",
+    "ictclas",
+    "chinese",
+    "segmentation",
+    "nlp",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Chinese (Simplified)",
+    "Natural Language :: Chinese (Traditional)",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+dependencies = [
+    "click ~= 8.1"
+]
+
+[project.urls]
+Documentation = "https://tsroten.github.io/pynlpir"
+Changes = "https://tsroten.github.io/pynlpir/history.html"
+"Issue Tracker" = "https://github.com/tsroten/pynlpir/issues"
+"Source Code" = "https://github.com/tsroten/pynlpir"
+
+[project.scripts]
+pynlpir = "pynlpir.cli:cli"
+
+[tool.hatch.version]
+path = "src/pynlpir/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+]
+
+[tool.hatch.envs.default.scripts]
+test = "hatch run test:run"
+format = "hatch run style:format"
+lint = "hatch run style:check"
+docs = "hatch run docs:html"
+
+[tool.hatch.envs.docs]
+dependencies = [
+  "Sphinx",
+  "releases"
+]
+
+[tool.hatch.envs.docs.scripts]
+clean = "cd docs && make clean"
+generate = "cd docs && make html"
+view = "open docs/_build/html/index.html"
+check = "cd docs && make linkcheck"
+html = [
+    "clean",
+    "generate",
+    "check",
+    "view"
+]
+
+[tool.hatch.envs.test.scripts]
+clean = "find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete"
+test = "python3 -Wdefault -m unittest -v"
+run = [
+    "clean",
+    "test"
+]
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.7", "3.8", "3.9", "3.10", "3.11"]
+
+[tool.hatch.envs.style]
+detached = true
+dependencies = [
+    "black",
+    "flake8",
+    "pep8-naming",
+    "flake8-blind-except",
+    "flake8-builtins",
+    "flake8-pep3101",
+    "flake8-string-format"
+]
+
+[tool.hatch.envs.style.scripts]
+check = [
+    "black -q --check --diff src tests",
+    "flake8 src tests"
+]
+format = [
+    "black -q src tests"
+]
