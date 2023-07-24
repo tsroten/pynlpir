@@ -4,7 +4,6 @@
 This module is used by :mod:`pynlpir` to format segmented words for output.
 
 """
-from __future__ import unicode_literals
 import logging
 
 
@@ -263,8 +262,8 @@ def get_pos_name(code, name="parent", english=True, pos_tags=POS_MAP):
         part of speech code is not transformed at all.
     :param bool english: Whether to return an English or Chinese name.
     :param dict pos_tags: Custom part of speech tags to use.
-    :returns: ``str`` (``unicode`` for Python 2) if *name* is ``'parent'`` or
-        ``'child'``. ``tuple`` if *name* is ``'all'``.
+    :returns: ``str`` if *name* is ``'parent'`` or ``'child'``.
+        ``tuple`` if *name* is ``'all'``.
 
     """
     return _get_pos_name(code, name, english, pos_tags)

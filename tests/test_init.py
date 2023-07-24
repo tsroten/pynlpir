@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
 """Unit tests for pynlpir's __init__.py file."""
-from __future__ import unicode_literals
 import os
 import shutil
 import tempfile
 import unittest
-
-try:
-    from urllib.error import URLError
-except ImportError:
-    from urllib2 import URLError
+from urllib.error import URLError
 
 import pynlpir
 from tests.utilities import timeout

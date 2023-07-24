@@ -17,11 +17,9 @@ the API.
 
 """
 
-from __future__ import unicode_literals
 import datetime as dt
 import logging
 import os
-import sys
 
 from . import nlpir, pos_map
 
@@ -30,10 +28,6 @@ __version__ = "0.6.0"
 logger = logging.getLogger("pynlpir")
 
 fopen = open
-
-is_python3 = sys.version_info[0] > 2
-if is_python3:
-    unicode = str
 
 #: The encoding configured by :func:`open`.
 ENCODING = "utf_8"
@@ -104,10 +98,10 @@ def open(
     else:
         ENCODING_ERRORS = encoding_errors
 
-    # Init in Python 3 expects bytes, not strings.
-    if is_python3 and isinstance(data_dir, str):
+    # Init expects bytes, not strings.
+    if isinstance(data_dir, str):
         data_dir = _encode(data_dir)
-    if is_python3 and isinstance(license_code, str):
+    if isinstance(license_code, str):
         license_code = _encode(license_code)
 
     if not nlpir.Init(data_dir, encoding_constant, license_code):
@@ -172,7 +166,7 @@ def _decode(s, encoding=None, errors=None):
         encoding = ENCODING
     if errors is None:
         errors = ENCODING_ERRORS
-    return s if isinstance(s, unicode) else s.decode(encoding, errors)
+    return s if isinstance(s, str) else s.decode(encoding, errors)
 
 
 def _encode(s, encoding=None, errors=None):
@@ -181,7 +175,7 @@ def _encode(s, encoding=None, errors=None):
         encoding = ENCODING
     if errors is None:
         errors = ENCODING_ERRORS
-    return s.encode(encoding, errors) if isinstance(s, unicode) else s
+    return s.encode(encoding, errors) if isinstance(s, str) else s
 
 
 def _to_float(s):
@@ -311,9 +305,6 @@ def get_key_words(s, max_words=50, weighted=False):
             weight = _to_float(weight)
             weights.append(weight or 0.0)
             words.append(word)
-        fresult = zip(words, weights)
-        if is_python3:
-            # Return a list instead of a zip object in Python 3.
-            fresult = list(fresult)
+        fresult = list(zip(words, weights))
     logger.debug("Key words formatted: {0}.".format(fresult))
     return fresult

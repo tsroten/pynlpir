@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Unit tests for pynlpir.nlpir."""
-from __future__ import unicode_literals
 import ctypes
 import unittest
 

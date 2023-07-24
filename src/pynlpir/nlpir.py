@@ -15,7 +15,6 @@ After using the API, you can call :func:`Exit` to exit the API and free up
 allocated memory.
 
 """
-from __future__ import unicode_literals
 from ctypes import (
     c_bool,
     c_char,
@@ -36,8 +35,7 @@ import sys
 logger = logging.getLogger("pynlpir.nlpir")
 
 #: The absolute path to this package (used by NLPIR to find its ``Data``
-#: directory). This is a string in Python 2 and a bytes object in Python 3
-#: (so it can be used with the :func:`Init` function below).
+#: directory).
 PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 #: The absolute path to this path's lib directory.

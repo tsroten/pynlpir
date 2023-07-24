@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Unit tests for pynlpir.pos_map."""
-from __future__ import unicode_literals
 import unittest
 
 from pynlpir import pos_map

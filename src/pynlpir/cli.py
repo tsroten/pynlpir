@@ -4,13 +4,8 @@ import hashlib
 import os
 import shutil
 import tempfile
-
-try:
-    from urllib.error import URLError
-    from urllib.request import urlretrieve
-except ImportError:
-    from urllib import urlretrieve
-    from urllib2 import URLError
+from urllib.error import URLError
+from urllib.request import urlretrieve
 
 import click
 

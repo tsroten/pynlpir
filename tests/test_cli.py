@@ -3,12 +3,8 @@ import os
 import shutil
 import stat
 import unittest
-
-try:
-    from urllib.error import URLError
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import URLError, urlopen
+from urllib.error import URLError
+from urllib.request import urlopen
 
 from click.testing import CliRunner
 
