@@ -17,38 +17,37 @@ the API.
 
 """
 
-from __future__ import unicode_literals
 import datetime as dt
 import logging
 import os
-import sys
 
 from . import nlpir, pos_map
 
-__version__ = '0.6.0'
+__version__ = "0.6.0"
 
-logger = logging.getLogger('pynlpir')
+logger = logging.getLogger("pynlpir")
 
 fopen = open
 
-is_python3 = sys.version_info[0] > 2
-if is_python3:
-    unicode = str
-
 #: The encoding configured by :func:`open`.
-ENCODING = 'utf_8'
+ENCODING = "utf_8"
 
 #: The encoding error handling scheme configured by :func:`open`.
-ENCODING_ERRORS = 'strict'
+ENCODING_ERRORS = "strict"
 
 
 class LicenseError(Exception):
     """A custom exception for missing/invalid license errors."""
+
     pass
 
 
-def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,  # noqa: A001
-         encoding_errors=ENCODING_ERRORS, license_code=None):
+def open(
+    data_dir=nlpir.PACKAGE_DIR,
+    encoding=ENCODING,  # noqa: A001
+    encoding_errors=ENCODING_ERRORS,
+    license_code=None,
+):
     """Initializes the NLPIR API.
 
     This calls the function :func:`~pynlpir.nlpir.Init`.
@@ -73,34 +72,36 @@ def open(data_dir=nlpir.PACKAGE_DIR, encoding=ENCODING,  # noqa: A001
 
     """
     if license_code is None:
-        license_code = ''
+        license_code = ""
     global ENCODING
-    if encoding.lower() in ('utf_8', 'utf-8', 'u8', 'utf', 'utf8'):
-        ENCODING = 'utf_8'
+    if encoding.lower() in ("utf_8", "utf-8", "u8", "utf", "utf8"):
+        ENCODING = "utf_8"
         encoding_constant = nlpir.UTF8_CODE
-    elif encoding.lower() in ('gbk', '936', 'cp936', 'ms936'):
-        ENCODING = 'gbk'
+    elif encoding.lower() in ("gbk", "936", "cp936", "ms936"):
+        ENCODING = "gbk"
         encoding_constant = nlpir.GBK_CODE
-    elif encoding.lower() in ('big5', 'big5-tw', 'csbig5'):
-        ENCODING = 'big5'
+    elif encoding.lower() in ("big5", "big5-tw", "csbig5"):
+        ENCODING = "big5"
         encoding_constant = nlpir.BIG5_CODE
     else:
         raise ValueError("encoding must be one of 'utf_8', 'big5', or 'gbk'.")
-    logger.debug("Initializing the NLPIR API: 'data_dir': '{}', 'encoding': "
-                 "'{}', 'license_code': '{}'".format(
-                     data_dir, encoding, license_code))
+    logger.debug(
+        "Initializing the NLPIR API: 'data_dir': '{0}', 'encoding': "
+        "'{1}', 'license_code': '{2}'".format(data_dir, encoding, license_code)
+    )
 
     global ENCODING_ERRORS
-    if encoding_errors not in ('strict', 'ignore', 'replace'):
-        raise ValueError("encoding_errors must be one of 'strict', 'ignore', "
-                         "or 'replace'.")
+    if encoding_errors not in ("strict", "ignore", "replace"):
+        raise ValueError(
+            "encoding_errors must be one of 'strict', 'ignore', " "or 'replace'."
+        )
     else:
         ENCODING_ERRORS = encoding_errors
 
-    # Init in Python 3 expects bytes, not strings.
-    if is_python3 and isinstance(data_dir, str):
+    # Init expects bytes, not strings.
+    if isinstance(data_dir, str):
         data_dir = _encode(data_dir)
-    if is_python3 and isinstance(license_code, str):
+    if isinstance(license_code, str):
         license_code = _encode(license_code)
 
     if not nlpir.Init(data_dir, encoding_constant, license_code):
@@ -132,27 +133,31 @@ def _attempt_to_raise_license_error(data_dir):
     """
     if isinstance(data_dir, bytes):
         data_dir = _decode(data_dir)
-    data_dir = os.path.join(data_dir, 'Data')
+    data_dir = os.path.join(data_dir, "Data")
 
-    current_date = dt.date.today().strftime('%Y%m%d')
-    timestamp = dt.datetime.today().strftime('[%Y-%m-%d %H:%M:%S]')
+    current_date = dt.date.today().strftime("%Y%m%d")
+    timestamp = dt.datetime.today().strftime("[%Y-%m-%d %H:%M:%S]")
     data_files = os.listdir(data_dir)
 
     for f in data_files:
-        if f == (current_date + '.err'):
+        if f == (current_date + ".err"):
             file_name = os.path.join(data_dir, f)
             with fopen(file_name) as error_file:
                 for line in error_file:
                     if not line.startswith(timestamp):
                         continue
-                    if 'Not valid license' in line:
-                        raise LicenseError('Your license appears to have '
-                                           'expired. Try running "pynlpir '
-                                           'update".')
-                    elif 'Can not open License file' in line:
-                        raise LicenseError('Your license appears to be '
-                                           'missing. Try running "pynlpir '
-                                           'update".')
+                    if "Not valid license" in line:
+                        raise LicenseError(
+                            "Your license appears to have "
+                            'expired. Try running "pynlpir '
+                            'update".'
+                        )
+                    elif "Can not open License file" in line:
+                        raise LicenseError(
+                            "Your license appears to be "
+                            'missing. Try running "pynlpir '
+                            'update".'
+                        )
 
 
 def _decode(s, encoding=None, errors=None):
@@ -161,7 +166,7 @@ def _decode(s, encoding=None, errors=None):
         encoding = ENCODING
     if errors is None:
         errors = ENCODING_ERRORS
-    return s if isinstance(s, unicode) else s.decode(encoding, errors)
+    return s if isinstance(s, str) else s.decode(encoding, errors)
 
 
 def _encode(s, encoding=None, errors=None):
@@ -170,7 +175,7 @@ def _encode(s, encoding=None, errors=None):
         encoding = ENCODING
     if errors is None:
         errors = ENCODING_ERRORS
-    return s.encode(encoding, errors) if isinstance(s, unicode) else s
+    return s.encode(encoding, errors) if isinstance(s, str) else s
 
 
 def _to_float(s):
@@ -182,8 +187,9 @@ def _to_float(s):
         return False
 
 
-def _get_pos_name(code, name='parent', english=True, delimiter=':',
-                  pos_tags=pos_map.POS_MAP):
+def _get_pos_name(
+    code, name="parent", english=True, delimiter=":", pos_tags=pos_map.POS_MAP
+):
     """Gets the part of speech name for *code*.
 
     Joins the names together with *delimiter* if *name* is ``'all'``.
@@ -192,11 +198,12 @@ def _get_pos_name(code, name='parent', english=True, delimiter=':',
 
     """
     pos_name = pos_map.get_pos_name(code, name, english, pos_tags=pos_tags)
-    return delimiter.join(pos_name) if name == 'all' else pos_name
+    return delimiter.join(pos_name) if name == "all" else pos_name
 
 
-def segment(s, pos_tagging=True, pos_names='parent', pos_english=True,
-            pos_tags=pos_map.POS_MAP):
+def segment(
+    s, pos_tagging=True, pos_names="parent", pos_english=True, pos_tags=pos_map.POS_MAP
+):
     """Segment Chinese text *s* using NLPIR.
 
     The segmented tokens are returned as a list. Each item of the list is a
@@ -235,25 +242,29 @@ def segment(s, pos_tagging=True, pos_names='parent', pos_english=True,
     """
     s = _decode(s)
     s = s.strip()
-    logger.debug("Segmenting text with{} POS tagging: {}.".format(
-                 '' if pos_tagging else 'out', s))
+    logger.debug(
+        "Segmenting text with{0} POS tagging: {1}.".format(
+            "" if pos_tagging else "out", s
+        )
+    )
     result = nlpir.ParagraphProcess(_encode(s), pos_tagging)
     result = _decode(result)
-    logger.debug("Finished segmenting text: {}.".format(result))
+    logger.debug("Finished segmenting text: {0}.".format(result))
     logger.debug("Formatting segmented text.")
-    tokens = result.strip().replace('  ', ' ').split(' ')
-    tokens = [' ' if t == '' else t for t in tokens]
+    tokens = result.strip().replace("  ", " ").split(" ")
+    tokens = [" " if t == "" else t for t in tokens]
     if pos_tagging:
         for i, t in enumerate(tokens):
-            token = tuple(t.rsplit('/', 1))
+            token = tuple(t.rsplit("/", 1))
             if len(token) == 1:
                 token = (token[0], None)
             if pos_names is not None and token[1] is not None:
-                pos_name = _get_pos_name(token[1], pos_names, pos_english,
-                                         pos_tags=pos_tags)
+                pos_name = _get_pos_name(
+                    token[1], pos_names, pos_english, pos_tags=pos_tags
+                )
                 token = (token[0], pos_name)
             tokens[i] = token
-    logger.debug("Formatted segmented text: {}.".format(tokens))
+    logger.debug("Formatted segmented text: {0}.".format(tokens))
     return tokens
 
 
@@ -276,24 +287,24 @@ def get_key_words(s, max_words=50, weighted=False):
 
     """
     s = _decode(s)
-    logger.debug("Searching for up to {}{} key words in: {}.".format(
-                 max_words, ' weighted' if weighted else '', s))
+    logger.debug(
+        "Searching for up to {0}{1} key words in: {2}.".format(
+            max_words, " weighted" if weighted else "", s
+        )
+    )
     result = nlpir.GetKeyWords(_encode(s), max_words, weighted)
     result = _decode(result)
-    logger.debug("Finished key word search: {}.".format(result))
+    logger.debug("Finished key word search: {0}.".format(result))
     logger.debug("Formatting key word search results.")
-    fresult = result.strip('#').split('#') if result else []
+    fresult = result.strip("#").split("#") if result else []
     if weighted:
         weights, words = [], []
         for w in fresult:
-            result = w.split('/')
+            result = w.split("/")
             word, weight = result[0], result[2]
             weight = _to_float(weight)
             weights.append(weight or 0.0)
             words.append(word)
-        fresult = zip(words, weights)
-        if is_python3:
-            # Return a list instead of a zip object in Python 3.
-            fresult = list(fresult)
-    logger.debug("Key words formatted: {}.".format(fresult))
+        fresult = list(zip(words, weights))
+    logger.debug("Key words formatted: {0}.".format(fresult))
     return fresult

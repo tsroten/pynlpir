@@ -13,9 +13,9 @@ by NLPIR (for that, see :mod:`pynlpir.nlpir`). A few design choices have been
 made with these functions as well, e.g. they have been renamed and their output
 is formatted differently.
 
-The functions in this module all assume input is either unicode or encoded
+The functions in this module all assume input is either a string or encoded
 using the encoding specified when :func:`open` is called.
-These functions return unicode strings.
+These functions return strings.
 
 After importing this module, you must call :func:`open` in order to initialize
 the NLPIR API. When you're done using the NLPIR API, call :func:`close` to exit
@@ -78,8 +78,8 @@ the API.
     This uses the function :func:`~pynlpir.nlpir.ParagraphProcess` to segment
     *s*.
 
-    :param s: The Chinese text to segment. *s* should be Unicode or a UTF-8
-        encoded string.
+    :param s: The Chinese text to segment. *s* should be a string or UTF-8
+        encoded bytes.
     :param bool pos_tagging: Whether or not to include part of speech tagging
         (defaults to ``True``).
     :param pos_names: What type of part of speech names to return. This
@@ -109,8 +109,8 @@ the API.
     This uses the function :func:`~pynlpir.nlpir.GetKeyWords` to determine
     the key words in *s*.
 
-    :param s: The Chinese text to analyze. *s* should be Unicode or a UTF-8
-        encoded string.
+    :param s: The Chinese text to analyze. *s* should be a string or UTF-8
+        encoded bytes.
     :param int max_words: The maximum number of key words to find (defaults to
         ``50``).
     :param bool weighted: Whether or not to return the key words' weights
@@ -139,8 +139,7 @@ allocated memory.
 .. data:: PACKAGE_DIR
 
     The absolute path to this package (used by NLPIR to find its ``Data``
-    directory). This is a string in Python 2 and a bytes object in Python 3
-    (so it can be used with the :func:`Init` function below).
+    directory).
 
 .. data:: LIB_DIR
 
@@ -472,6 +471,6 @@ This module is used by :mod:`pynlpir` to format segmented words for output.
         names should be used, e.g. ``('noun', 'toponym',
         'transcribed toponym')`` for ``'nsf'``. ``'raw'`` indicates the original names.
     :param bool english: Whether to return an English or Chinese name.
-    :returns: ``str`` (``unicode`` for Python 2) if *name* is ``'parent'`` or
+    :returns: ``str`` if *name* is ``'parent'`` or
         ``'child'``. ``tuple`` if *name* is ``'all'``. :data:`None` if the part
         of speech code is not recognized.

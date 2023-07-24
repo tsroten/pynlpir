@@ -15,22 +15,31 @@ After using the API, you can call :func:`Exit` to exit the API and free up
 allocated memory.
 
 """
-from __future__ import unicode_literals
-from ctypes import (c_bool, c_char, c_char_p, c_double, c_int, c_uint,
-                    c_ulong, c_void_p, cdll, POINTER, Structure)
+from ctypes import (
+    c_bool,
+    c_char,
+    c_char_p,
+    c_double,
+    c_int,
+    c_uint,
+    c_ulong,
+    c_void_p,
+    cdll,
+    POINTER,
+    Structure,
+)
 import logging
 import os
 import sys
 
-logger = logging.getLogger('pynlpir.nlpir')
+logger = logging.getLogger("pynlpir.nlpir")
 
 #: The absolute path to this package (used by NLPIR to find its ``Data``
-#: directory). This is a string in Python 2 and a bytes object in Python 3
-#: (so it can be used with the :func:`Init` function below).
+#: directory).
 PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 #: The absolute path to this path's lib directory.
-LIB_DIR = os.path.join(PACKAGE_DIR, 'lib')
+LIB_DIR = os.path.join(PACKAGE_DIR, "lib")
 
 #: NLPIR's GBK encoding constant.
 GBK_CODE = 0
@@ -56,23 +65,17 @@ class ResultT(Structure):
 
     _fields_ = [
         # The start position of the word in the source Chinese text string.
-        ('start', c_int),
-
+        ("start", c_int),
         # The detected word's length.
-        ('length', c_int),
-
+        ("length", c_int),
         # A string representing the word's part of speech.
-        ('sPOS', c_char * 40),
-
-        ('iPOS', c_int),
-
-        ('word_ID', c_int),
-
+        ("sPOS", c_char * 40),
+        ("iPOS", c_int),
+        ("word_ID", c_int),
         # If the word is found in the user's dictionary.
-        ('word_type', c_int),
-
+        ("word_type", c_int),
         # The weight of the detected word.
-        ('weight', c_int)
+        ("weight", c_int),
     ]
 
 
@@ -88,27 +91,26 @@ def load_library(platform, is_64bit, lib_dir=LIB_DIR):
     :raises RuntimeError: The user's platform is not supported by NLPIR.
 
     """
-    logger.debug("Loading NLPIR library file from '{}'".format(lib_dir))
-    if platform.startswith('win') and is_64bit:
-        lib = os.path.join(lib_dir, 'NLPIR64')
+    logger.debug("Loading NLPIR library file from '{0}'".format(lib_dir))
+    if platform.startswith("win") and is_64bit:
+        lib = os.path.join(lib_dir, "NLPIR64")
         logger.debug("Using library file for 64-bit Windows.")
-    elif platform.startswith('win'):
-        lib = os.path.join(lib_dir, 'NLPIR32')
+    elif platform.startswith("win"):
+        lib = os.path.join(lib_dir, "NLPIR32")
         logger.debug("Using library file for 32-bit Windows.")
-    elif platform.startswith('linux') and is_64bit:
-        lib = os.path.join(lib_dir, 'libNLPIR64.so')
+    elif platform.startswith("linux") and is_64bit:
+        lib = os.path.join(lib_dir, "libNLPIR64.so")
         logger.debug("Using library file for 64-bit GNU/Linux.")
-    elif platform.startswith('linux'):
-        lib = os.path.join(lib_dir, 'libNLPIR32.so')
+    elif platform.startswith("linux"):
+        lib = os.path.join(lib_dir, "libNLPIR32.so")
         logger.debug("Using library file for 32-bit GNU/Linux.")
-    elif platform == 'darwin':
-        lib = os.path.join(lib_dir, 'libNLPIRios.so')
+    elif platform == "darwin":
+        lib = os.path.join(lib_dir, "libNLPIRios.so")
         logger.debug("Using library file for OSX/iOS.")
     else:
-        raise RuntimeError("Platform '{}' is not supported by NLPIR.".format(
-                           platform))
+        raise RuntimeError("Platform '{0}' is not supported by NLPIR.".format(platform))
     lib_nlpir = cdll.LoadLibrary(lib)
-    logger.debug("NLPIR library file '{}' loaded.".format(lib))
+    logger.debug("NLPIR library file '{0}' loaded.".format(lib))
     return lib_nlpir
 
 
@@ -133,44 +135,40 @@ def get_func(name, argtypes=None, restype=c_int, lib=libNLPIR):
         callable.
 
     """
-    logger.debug("Getting NLPIR API function: 'name': '{}', 'argtypes': '{}',"
-                 " 'restype': '{}'.".format(name, argtypes, restype))
+    logger.debug(
+        "Getting NLPIR API function: 'name': '{0}', 'argtypes': '{1}',"
+        " 'restype': '{2}'.".format(name, argtypes, restype)
+    )
     func = getattr(lib, name)
     if argtypes is not None:
         func.argtypes = argtypes
     if restype is not c_int:
         func.restype = restype
-    logger.debug("NLPIR API function '{}' retrieved.".format(name))
+    logger.debug("NLPIR API function '{0}' retrieved.".format(name))
     return func
 
 
 # Get the exported NLPIR API functions.
-Init = get_func('NLPIR_Init', [c_char_p, c_int, c_char_p], c_bool)
-Exit = get_func('NLPIR_Exit', restype=c_bool)
-ParagraphProcess = get_func('NLPIR_ParagraphProcess', [c_char_p, c_int],
-                            c_char_p)
-ParagraphProcessA = get_func('NLPIR_ParagraphProcessA',
-                             [c_char_p, c_void_p, c_bool],
-                             POINTER(ResultT))
-FileProcess = get_func('NLPIR_FileProcess', [c_char_p, c_char_p, c_int],
-                       c_double)
-ImportUserDict = get_func('NLPIR_ImportUserDict', [c_char_p], c_uint)
-AddUserWord = get_func('NLPIR_AddUserWord', [c_char_p])
-SaveTheUsrDic = get_func('NLPIR_SaveTheUsrDic')
-DelUsrWord = get_func('NLPIR_DelUsrWord', [c_char_p])
-GetKeyWords = get_func('NLPIR_GetKeyWords', [c_char_p, c_int, c_bool],
-                       c_char_p)
-GetFileKeyWords = get_func('NLPIR_GetFileKeyWords',
-                           [c_char_p, c_int, c_bool], c_char_p)
-GetNewWords = get_func('NLPIR_GetNewWords', [c_char_p, c_int, c_bool],
-                       c_char_p)
-GetFileNewWords = get_func('NLPIR_GetFileNewWords',
-                           [c_char_p, c_int, c_bool], c_char_p)
-FingerPrint = get_func('NLPIR_FingerPrint', [c_char_p], c_ulong)
-SetPOSmap = get_func('NLPIR_SetPOSmap', [c_int])
-NWI_Start = get_func('NLPIR_NWI_Start', None, c_bool)
-NWI_AddFile = get_func('NLPIR_NWI_AddFile', [c_char_p], c_bool)
-NWI_AddMem = get_func('NLPIR_NWI_AddMem', [c_char_p], c_bool)
-NWI_Complete = get_func('NLPIR_NWI_Complete', None, c_bool)
-NWI_GetResult = get_func('NLPIR_NWI_GetResult', [c_bool], c_char_p)
-NWI_Result2UserDict = get_func('NLPIR_NWI_Result2UserDict', None, c_bool)
+Init = get_func("NLPIR_Init", [c_char_p, c_int, c_char_p], c_bool)
+Exit = get_func("NLPIR_Exit", restype=c_bool)
+ParagraphProcess = get_func("NLPIR_ParagraphProcess", [c_char_p, c_int], c_char_p)
+ParagraphProcessA = get_func(
+    "NLPIR_ParagraphProcessA", [c_char_p, c_void_p, c_bool], POINTER(ResultT)
+)
+FileProcess = get_func("NLPIR_FileProcess", [c_char_p, c_char_p, c_int], c_double)
+ImportUserDict = get_func("NLPIR_ImportUserDict", [c_char_p], c_uint)
+AddUserWord = get_func("NLPIR_AddUserWord", [c_char_p])
+SaveTheUsrDic = get_func("NLPIR_SaveTheUsrDic")
+DelUsrWord = get_func("NLPIR_DelUsrWord", [c_char_p])
+GetKeyWords = get_func("NLPIR_GetKeyWords", [c_char_p, c_int, c_bool], c_char_p)
+GetFileKeyWords = get_func("NLPIR_GetFileKeyWords", [c_char_p, c_int, c_bool], c_char_p)
+GetNewWords = get_func("NLPIR_GetNewWords", [c_char_p, c_int, c_bool], c_char_p)
+GetFileNewWords = get_func("NLPIR_GetFileNewWords", [c_char_p, c_int, c_bool], c_char_p)
+FingerPrint = get_func("NLPIR_FingerPrint", [c_char_p], c_ulong)
+SetPOSmap = get_func("NLPIR_SetPOSmap", [c_int])
+NWI_Start = get_func("NLPIR_NWI_Start", None, c_bool)
+NWI_AddFile = get_func("NLPIR_NWI_AddFile", [c_char_p], c_bool)
+NWI_AddMem = get_func("NLPIR_NWI_AddMem", [c_char_p], c_bool)
+NWI_Complete = get_func("NLPIR_NWI_Complete", None, c_bool)
+NWI_GetResult = get_func("NLPIR_NWI_GetResult", [c_bool], c_char_p)
+NWI_Result2UserDict = get_func("NLPIR_NWI_Result2UserDict", None, c_bool)

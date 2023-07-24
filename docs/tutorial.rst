@@ -27,7 +27,7 @@ for information on specifying a different data directory.
 
     pynlpir.open()
 
-By default, input is assumed to be unicode or UTF-8 encoded. If you'd like to use
+By default, input is assumed to be a string or UTF-8 encoded. If you'd like to use
 a different encoding (e.g. GBK or BIG5), use the *encoding* keyword argument
 when calling :func:`~pynlpir.open`:
 
@@ -37,10 +37,10 @@ when calling :func:`~pynlpir.open`:
 
 .. TIP::
 
-    No matter what encoding you've specified, you can always pass unicode strings to
+    No matter what encoding you've specified, you can always pass strings to
     :mod:`pynlpir` functions.
 
-PyNLPIR's helper functions always return unicode strings.
+PyNLPIR's helper functions always return strings.
 
 Once you've initialized NLPIR, you can start segmenting and analyzing text.
 

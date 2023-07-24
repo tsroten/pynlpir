@@ -36,8 +36,8 @@ is open to whoever wants to implement it.
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-PyNLPIR could always use more documentation, whether as part of the 
-official PyNLPIR docs, in docstrings, or even on the web in blog posts,
+Dragon Mapper could always use more documentation, whether as part of the 
+official Dragon Mapper docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Submit Feedback
@@ -62,11 +62,7 @@ Ready to contribute? Here's how to set up `pynlpir` for local development.
 
     $ git clone git@github.com:your_name_here/pynlpir.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
-
-    $ mkvirtualenv pynlpir
-    $ cd pynlpir/
-    $ python setup.py develop
+3. Install `hatch <https://hatch.pypa.io>`_.
 
 4. Create a branch for local development::
 
@@ -74,13 +70,10 @@ Ready to contribute? Here's how to set up `pynlpir` for local development.
    
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox::
+5. When you're done making changes, check that the tests pass and then autoformat the code::
 
-    $ flake8 pynlpir
-    $ python setup.py test
-    $ tox
-
-   To get flake8 and tox, just pip install them into your virtualenv. 
+    $ hatch run test
+    $ hatch run format
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -99,7 +92,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 2.7, 3.3, and 3.4. Check 
-   https://travis-ci.org/tsroten/pynlpir/pull_requests
+3. The pull request should work for Python 3.7+. Check 
+   https://github.com/tsroten/pynlpir/actions/workflows/ci.yml
    and make sure that the tests pass for all supported Python versions.
 4. If you want to receive credit, add your name to `AUTHORS.rst`.

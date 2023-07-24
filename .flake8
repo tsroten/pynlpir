@@ -1,0 +1,3 @@
+[flake8]
+ignore = A001
+max-line-length = 100

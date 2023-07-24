@@ -1,0 +1,50 @@
+name: docs
+
+on:
+  push:
+    tags:
+    - '*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade hatch
+      - name: Build docs
+        if: always()
+        run: hatch run docs:generate
+      - name: Check docs
+        if: always()
+        run: hatch run docs:check
+      - name: Upload docs
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: docs/_build/html
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

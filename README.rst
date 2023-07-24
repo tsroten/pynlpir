@@ -2,12 +2,16 @@
 PyNLPIR
 =======
 
-|Build Status|  |PyPI|
+.. image:: https://badge.fury.io/py/pynlpir.svg
+    :target: https://pypi.org/project/pynlpir
+
+.. image:: https://github.com/tsroten/pynlpir/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/tsroten/pynlpir/actions/workflows/ci.yml
 
 PyNLPIR is a Python wrapper around the
 `NLPIR/ICTCLAS Chinese segmentation software <http://www.nlpir.org/wordpress/>`_.
 
-* Documentation: http://pynlpir.rtfd.org
+* Documentation: https://tsroten.github.io/pynlpir/
 * GitHub: https://github.com/tsroten/pynlpir
 * Support: https://github.com/tsroten/pynlpir/issues
 * Free software: `MIT license <http://opensource.org/licenses/MIT>`_
@@ -36,24 +40,16 @@ Features
 * Support for UTF-8, GBK, and BIG5 encoded strings (and unicode of course!)
 * Access to NLPIR's C functions via ``ctypes``
 * Includes a copy of NLPIR
-* Runs on Python 2.7 and 3
-* Supports macOS, Linux, and Windows
+* Supports macOS (Intel), Linux, and Windows
 
 Getting Started
 ---------------
 
-* `Install PyNLPIR <http://pynlpir.readthedocs.org/en/latest/installation.html>`_
+* `Install PyNLPIR <https://tsroten.github.io/pynlpir/installation.html>`_
 
   * ``pip install pynlpir`` to install PyNLPIR
   * ``pynlpir update`` to download the latest license
 
-* Read `PyNLPIR's tutorial <http://pynlpir.readthedocs.org/en/latest/tutorial.html>`_
-* Learn from the `API documentation <http://pynlpir.readthedocs.org/en/latest/api.html>`_
-* `Contribute <http://pynlpir.readthedocs.org/en/latest/contributing.html>`_ documentation, code, or feedback
-
-.. |Build Status| image:: https://travis-ci.org/tsroten/pynlpir.png?branch=master
-        :target: https://travis-ci.org/tsroten/pynlpir
-
-.. |PyPI| image:: https://img.shields.io/pypi/v/pynlpir.svg
-    :target: https://pypi.python.org/pypi/pynlpir/
-    :alt: Latest Version
+* Read `PyNLPIR's tutorial <https://tsroten.github.io/pynlpir/tutorial.html>`_
+* Learn from the `API documentation <https://tsroten.github.io/pynlpir/api.html>`_
+* `Contribute <https://tsroten.github.io/pynlpir/contributing.html>`_ documentation, code, or feedback

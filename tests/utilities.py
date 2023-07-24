@@ -16,10 +16,11 @@ def timeout(timeout):
     except RuntimeError:
         print('open() timed out.')
     """
+
     def deco(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            res = [RuntimeError('function {0} timeout'.format(func.__name__))]
+            res = [RuntimeError("function {0} timeout".format(func.__name__))]
 
             def new_func():
                 try:
@@ -33,11 +34,13 @@ def timeout(timeout):
                 t.start()
                 t.join(timeout)
             except Exception as je:  # noqa: B902
-                print('Error starting thread')
+                print("Error starting thread")
                 raise je
             ret = res[0]
             if isinstance(ret, BaseException):
                 raise ret
             return ret
+
         return wrapper
+
     return deco
