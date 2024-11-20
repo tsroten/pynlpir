@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 project = 'PyNLPIR'
-copyright = '2023, Thomas Roten'
+copyright = '2024, Thomas Roten'
 author = 'Thomas Roten'
-release = '0.6.0'
+release = '0.6.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
