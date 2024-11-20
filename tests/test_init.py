@@ -136,7 +136,10 @@ class TestNLPIR(unittest.TestCase):
         """
         # it seems '甲' returns 'Mg', which is not listed in the POS_MAP.
         # thus in this case 'None' needs to be returned for '甲'.
-        s = "其中，新增了甲卡西酮、曲马多、安钠咖等12种新类型毒品的定罪量刑数量标准，" "并下调了在我国危害较为严重的毒品氯胺酮的定罪量刑数量标准。"
+        s = (
+            "其中，新增了甲卡西酮、曲马多、安钠咖等12种新类型毒品的定罪量刑数量标准，"
+            "并下调了在我国危害较为严重的毒品氯胺酮的定罪量刑数量标准。"
+        )
 
         segments = pynlpir.segment(s=s, pos_tagging=True, pos_names="all")
 
